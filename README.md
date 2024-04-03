@@ -1,2 +1,2 @@
-# -skypro-music
+# skypro-music
 Дизайн макета сайта Next
