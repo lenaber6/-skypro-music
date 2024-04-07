@@ -1,3 +1,17 @@
+.wrapper {
+  width: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  background-color: #383838;
+}
+
+.container {
+  max-width: 1920px;
+  height: 100vh;
+  margin: 0 auto;
+  position: relative;
+  background-color: #181818;
+}
 .main {
   display: flex;
   flex-direction: column;
@@ -120,6 +134,9 @@
   }
 }
 
+/* .footer {
+
+} */
 @media (prefers-reduced-motion) {
   .card:hover span {
     transform: none;
