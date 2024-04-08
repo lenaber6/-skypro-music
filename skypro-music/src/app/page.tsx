@@ -2,7 +2,8 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import Centerblock from "@/components/Centrerblock/Centerblock";
-import Navigation from "@/components/Navigation/Navigation";
+import Navigation from "@/components/Navigat/Navigation";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -53,14 +54,14 @@ export default function Home() {
                       </svg>
                     </div>
                     <div className="track-play__author">
-                      <a className="track-play__author-link" href="http://">
+                      <Link className="track-play__author-link" href="//">
                         Ты та...
-                      </a>
+                      </Link>
                     </div>
                     <div className="track-play__album">
-                      <a className="track-play__album-link" href="http://">
+                      <Link className="track-play__album-link" href="//">
                         Баста
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="track-play__like-dis">
