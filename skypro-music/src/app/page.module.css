@@ -25,6 +25,7 @@
   -ms-flex-pack: justify;
   justify-content: space-between;
 }
+
 .description {
   display: inherit;
   justify-content: inherit;

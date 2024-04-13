@@ -1,8 +1,13 @@
 import Link from "next/link";
 import styles from "./Track.module.css";
-import classNames from 'classnames';
 
-export default function Track() {
+// type TrackType = {
+//   name: string,
+//   author: string,
+//   album: string,
+// };
+
+export default function Track({}) {
     return(
         <div className={styles.playlistItem}>
         <div className={styles.playlistTrack}>

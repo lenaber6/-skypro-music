@@ -1,8 +1,17 @@
 import Track from "@/components/Track/Track";
 import styles from "./Centerblock.module.css";
 import classNames from "classnames";
+import { trackType } from "@/types";
+import { getTracks } from "@/api/tracks";
 
 export default function Centerblock() {
+  // let tracksData: trackType[];
+  // try {
+  //   tracksData = await getTracks();
+  // } catch (error: any) {
+  //   throw new Error(error.message);
+  // }
+  
     return(
         <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
             <div className={classNames(styles.centerblockSearch, styles.search)}>
@@ -39,7 +48,7 @@ export default function Centerblock() {
                 </div>
               </div>
               <div className={classNames(styles.contentPlaylist, styles.playlist)}>
-               <Track />
+               <Track  />
               </div>
             </div>
           </div>
