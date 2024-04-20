@@ -1,17 +1,35 @@
+'use client';
+
 import Track from "@/components/Track/Track";
 import styles from "./Centerblock.module.css";
 import classNames from "classnames";
 import { trackType } from "@/types";
 import { getTracks } from "@/api/tracks";
+import Filters from "../Filters/Filters";
+import { useEffect, useState } from "react";
 
-export default function Centerblock() {
+type CenterblockType = {
+ setTrack: (param: trackType) => void;
+};
+
+// export default async function Centerblock({setTrack}:CenterblockType) {
+export default  function Centerblock() {
+
   // let tracksData: trackType[];
   // try {
   //   tracksData = await getTracks();
   // } catch (error: any) {
   //   throw new Error(error.message);
   // }
-  
+
+  const [tracksData, setTracksData] = useState<trackType[]>([]);
+  useEffect(() => {
+    getTracks().then((data: trackType[]) => setTracksData(data))
+    .catch((error:any) => {
+      throw new Error(error.message);
+    });
+  }, []);
+
     return(
         <div className={classNames(styles.mainCenterblock, styles.centerblock)}>
             <div className={classNames(styles.centerblockSearch, styles.search)}>
@@ -26,16 +44,7 @@ export default function Centerblock() {
               />
             </div>
             <h2 className={styles.centerblockH2}>Треки</h2>
-            <div className={classNames(styles.centerblockFilter, styles.filter)}>
-              <div className={styles.filterTitle}>Искать по:</div>
-              <div className={classNames(styles.filterButton, styles.buttonAuthor, styles._btnText)}>
-                исполнителю
-              </div>
-              <div className={classNames(styles.filterButton, styles.buttonYear, styles._btnText)}>
-                году выпуска
-              </div>
-              <div className={classNames(styles.filterButton, styles.buttonGenre, styles._btnText)}>жанру</div>
-            </div>
+           <Filters />
             <div className={classNames(styles.centerblockContent, styles.contentPlaylist)}>
               <div className={classNames(styles.contentTitle, styles.playlistTitle)}>
                 <div className={classNames(styles.playlistTitleCol, styles.col01)}>Трек</div>
@@ -48,9 +57,25 @@ export default function Centerblock() {
                 </div>
               </div>
               <div className={classNames(styles.contentPlaylist, styles.playlist)}>
-               <Track  />
+               {tracksData.map((trackData) => (
+                <Track 
+                   key={trackData.id}
+                   name={trackData.name}
+                   author={trackData.author}
+                   album={trackData.album}
+                   duration_in_seconds={trackData.duration_in_seconds} 
+                  //  onClick={function (): void {
+                  //    throw new Error("Function not implemented.");
+                  //  } }   
+                   />))}
               </div>
             </div>
           </div>
     )
 }
+ // Обратите внимание, что функция компонента также является асинхронной
+//   export default async function HomePage() {
+//     const data = await getData();
+  
+//     return <main>/* Некий контент */</main>;
+//   }
