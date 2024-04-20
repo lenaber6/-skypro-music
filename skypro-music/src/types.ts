@@ -17,3 +17,7 @@ export type trackType = {
         track_file: string,
         stared_user: userType[]
 }
+export type ErrorType = {
+    error: Error;
+    reset: () => void;
+  }

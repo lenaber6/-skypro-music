@@ -1,11 +1,7 @@
 'use client';
 
+import { ErrorType } from '@/types';
 import { useEffect } from 'react';
-
-type ErrorType = {
-  error: unknown;
-  reset: any;
-}
 
 export default function Error({ error, reset }: ErrorType) {
     // if (error instanceof Error) {

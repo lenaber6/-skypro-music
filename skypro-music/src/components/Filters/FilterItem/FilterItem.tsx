@@ -11,7 +11,7 @@ type FilterItemType = {
 export default function FilterItem({ handleFilterClick,title, list, isOpened }: FilterItemType) {
 
   return (
-    <>
+    <div className={styles.wrapper}>
       <div
         onClick={() => handleFilterClick(title)}
         className={classNames(styles.filterButton, styles.btnText, {[styles.active]: isOpened})}
@@ -20,12 +20,13 @@ export default function FilterItem({ handleFilterClick,title, list, isOpened }: 
         
       </div>
      
-     {isOpened &&( <ul>
+     {isOpened &&( 
+        <ul className={styles.filterList}>
         {list.map((item) => (
-          <li 
+          <li className={styles.filterItem}
           key={item}>{item}</li>
         ))}
       </ul>)}
-    </>
+    </div>
   );
 }

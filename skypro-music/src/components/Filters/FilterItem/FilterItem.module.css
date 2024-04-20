@@ -1,4 +1,8 @@
-.filterButton {
+  .wrapper{
+    position: relative;
+    left: 10px;
+  }
+  .filterButton {
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -7,18 +11,43 @@
     border-radius: 60px;
     padding: 6px 20px;
   }
-  
-  .filterButton:not(:last-child) {
+  .filter__button:not(:last-child) {
     margin-right: 10px;
   }
-  
-  .btnText:active {
+  ._btnText:hover {
+    border-color: #d9b6ff;
+    color: #d9b6ff;
+    cursor: pointer;
+  }
+  .active {
     border-color: #ad61ff;
     color: #ad61ff;
     cursor: pointer;
   }
-  .btnText:hover {
-    border-color: #d9b6ff;
-    color: #d9b6ff;
+  .filterList {
+    display: flex;
+    position: absolute;
+    width: 248px;
+    height: 305px;
+    top: 45px;
+    padding: 34px 0px 0px 0px;
+    gap: 10px;
+    border-radius: 8px;
+    opacity: 0px;
+    background: #313131;
+    flex-direction: column;
+    align-items: center;
+  }
+  .filterItem{
+   font-family: "Montserrrat", sans-serif;
+   font-size: 20px;
+   font-weight: 400;
+   line-height: 24px;
+   text-align: left;
+  }
+  
+  .filterItem:hover{
+    color: #b672ff;
+    text-decoration: underline;
     cursor: pointer;
   }
