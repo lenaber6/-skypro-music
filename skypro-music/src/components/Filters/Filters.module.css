@@ -1,0 +1,69 @@
+.centerblockFilter {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 51px;
+  }
+  /* .filter {
+
+  } */
+  .filterTitle {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    margin-right: 15px;
+  }
+  
+  .filterButton {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    border: 1px solid #ffffff;
+    border-radius: 60px;
+    padding: 6px 20px;
+  }
+  
+  .filterButton:not(:last-child) {
+    margin-right: 10px;
+  }
+  
+  .btnText:active {
+    border-color: #ad61ff;
+    color: #ad61ff;
+    cursor: pointer;
+  }
+  .btnText:hover {
+    border-color: #d9b6ff;
+    color: #d9b6ff;
+    cursor: pointer;
+  }
+  .buttonAuthorYearGenre {
+    width: 248px;
+    height: 305px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+
+  }
+  .active {
+    width: 248px;
+    height: 305px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  /* .buttonYear{
+  }
+  .buttonGenre {
+
+  } */
