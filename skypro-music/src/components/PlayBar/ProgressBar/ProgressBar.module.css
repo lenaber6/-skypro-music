@@ -13,12 +13,14 @@
     position: relative;
     overflow: hidden;
     transition: height 0.2s;
+    
   
     background: linear-gradient(to right, var(--progress-color) var(--value), var(--progress-bg-color) var(--value));
   }
   
   .styledProgressInput:hover {
     --progress-height: 8px;
+    
   }
   /* Стили для WebKit браузеров */
 .styledProgressInput::-webkit-slider-runnable-track {

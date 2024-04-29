@@ -6,15 +6,13 @@ type TrackType = {
   album: string,
   // genre: string,
   duration_in_seconds: number,
-  // onClick: () => void;
+  onClick: () => void;
 };
 
-// export default function Track({name, author, album, duration_in_seconds, onClick}: TrackType) {
-export default function Track({name, author, album, duration_in_seconds}: TrackType) {
+export default function Track({name, author, album, duration_in_seconds, onClick}: TrackType) {
     
   return(
-        // <div onClick={onClick} className={styles.playlistItem}>
-           <div className={styles.playlistItem}>
+        <div onClick={onClick} className={styles.playlistItem}>
         <div className={styles.playlistTrack}>
           <div className={styles.trackTitle}>
             <div className={styles.trackTitleImage}>
