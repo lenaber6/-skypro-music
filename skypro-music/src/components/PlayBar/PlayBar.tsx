@@ -1,9 +1,8 @@
-'use client';
+"use client";
 
 import styles from "./PlayBar.module.css";
 import classNames from "classnames";
 import TrackPlay from "./TrackPlay/TrackPlay";
-import Volume from "./VolumeBar/VolumeBar";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { trackType } from "@/types";
 import ProgressBar from "./ProgressBar/ProgressBar";
@@ -17,6 +16,8 @@ export default function PlayBar({ track }: PlayBarType) {
 
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isLooping, setIsLooping] = useState<boolean>(false);
+  const [volume, setVolume] = useState<number>(0.5); // Начальная громкость установлена на 50%
 
   const duration = audioRef.current?.duration;
 
@@ -28,78 +29,145 @@ export default function PlayBar({ track }: PlayBarType) {
         audioRef.current.play();
       }
       setIsPlaying(!isPlaying);
-    }
+    };
   };
 
   const toggleLoop = () => {
     if (audioRef.current) {
-audioRef.current.loop = true;
-    } 
+      if (isLooping) {
+        audioRef.current.loop = false;
+      } else {
+        audioRef.current.loop = true;
+      }
+    }
+    setIsLooping((prev) => !prev);
   };
   useEffect(() => {
-    audioRef.current?.addEventListener("timeupdate", () => setCurrentTime(audioRef.current!.currentTime))
-  }, [])
+    audioRef.current?.addEventListener("timeupdate", () =>
+      setCurrentTime(audioRef.current!.currentTime)
+    );
+  }, []);
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
 
   const handleSeek = (event: ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
-      setCurrentTime(Number( event.target.value))
-    audioRef.current.currentTime = Number( event.target.value); // Преобразовали строку в число
-  }
-};
+      setCurrentTime(Number(event.target.value));
+      audioRef.current.currentTime = Number(event.target.value); // Преобразовали строку в число
+    }
+  };
+  const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    let newVolume = Number(event.target.value);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume; // тут меняешь громость. audioRef это реф на тег audio твоего трека
+      setVolume(newVolume); // если нужно в стейт положить
+    }
+  };
+  
+
   return (
     <div className={styles.bar}>
       <div className={styles.barContent}>
-        <audio ref={audioRef} src={track.track_file}></audio>
-        <ProgressBar 
-        max={duration}
-        value={currentTime}
-        step={0.01}
-        onChange={handleSeek}
+        <audio ref={audioRef} src={track.track_file} 
+        onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}></audio>
+         <div className={styles.trackTimeBlock}>
+          <div>5:34</div>
+          <div> / </div>
+          <div>6:90</div>
+        </div>
+        {/* <div className={styles.trackTimeBlock}>
+          <div>{durationFormat(currentTime)}</div>
+          <div> / </div>
+          <div>{durationFormat(duration)}</div>
+        </div> */}
+        <ProgressBar
+          max={duration}
+          value={currentTime}
+          step={0.01}
+          onChange={handleSeek}
         />
         <div className={styles.barPlayerBlock}>
           <div className={classNames(styles.barPlayer, styles.player)}>
-          <div className={styles.playerControls}>
-      <div className={styles.playerBtnPrev}>
-        <svg className={styles.playerBtnPrevSvg}>
-          <use xlinkHref="img/icon/sprite.svg#icon-prev" width={15} height={14}/>
-        </svg>
-      </div>
-      <div onClick={togglePlay}  className={classNames(styles.playerBtnPlay, styles.btn)}>
-        <svg className={styles.playerBtnPlaySvg}>
-          <use xlinkHref={`img/icon/sprite.svg#${isPlaying ? "icon-pause" : "icon-play"}`} width={22} height={20}/>
-        </svg>
-      </div>
-      <div className={styles.playerBtnNext}>
-        <svg className={styles.playerBtnNextSvg}>
-          <use xlinkHref="img/icon/sprite.svg#icon-next" />
-        </svg>
-      </div>
-      <div onClick={toggleLoop} className={classNames(styles.playerBtnRepeat, styles.btnIcon)}>
-        <svg className={styles.playerBtnRepeatSvg}>
-          <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
-        </svg>
-      </div>
-      <div className={classNames(styles.playerBtnShuffle, styles.btnIcon)}>
-        <svg className={styles.playerBtnShuffleSvg}>
-          <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
-        </svg>
-      </div>
-    </div>
+            <div className={styles.playerControls}>
+              <div className={styles.playerBtnPrev}>
+                <svg className={styles.playerBtnPrevSvg}>
+                  <use
+                    xlinkHref="img/icon/sprite.svg#icon-prev"
+                    width={15}
+                    height={14}
+                  />
+                </svg>
+              </div>
+              <div
+                onClick={togglePlay}
+                className={classNames(styles.playerBtnPlay, styles.btn)}
+              >
+                <svg className={styles.playerBtnPlaySvg}>
+                  <use
+                    xlinkHref={`img/icon/sprite.svg#${
+                      isPlaying ? "icon-pause" : "icon-play"
+                    }`}
+                    width={22}
+                    height={20}
+                  />
+                </svg>
+              </div>
+              <div className={styles.playerBtnNext}>
+                <svg className={styles.playerBtnNextSvg}>
+                  <use xlinkHref="img/icon/sprite.svg#icon-next" />
+                </svg>
+              </div>
+              <div
+                onClick={toggleLoop}
+                className={classNames(styles.playerBtnRepeat, styles.btnIcon)}
+              >
+                <svg className={styles.playerBtnRepeatSvg}>
+                  <use xlinkHref={`img/icon/sprite.svg#${
+                      isLooping ? "icon-repeat-active" : "icon-repeat"
+                    }`} />
+                </svg>
+              </div>
+              <div
+                className={classNames(styles.playerBtnShuffle, styles.btnIcon)}
+              >
+                <svg className={styles.playerBtnShuffleSvg}>
+                  <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
+                </svg>
+              </div>
+            </div>
             <TrackPlay />
           </div>
-          <Volume track={{
-            id: 0,
-            name: "",
-            author: "",
-            release_date: "",
-            genre: "",
-            duration_in_seconds: 0,
-            album: "",
-            logo: null,
-            track_file: "",
-            stared_user: []
-          }} />
+          <div className={classNames(styles.barVolumeBlock, styles.volume)}>
+            <audio
+              ref={audioRef}
+              src={track.track_file}
+              controls
+              className={styles.controls}
+            ></audio>
+            <input
+              className={styles.styledProgressInput}
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={volume}
+              onChange={handleVolumeChange}
+            />
+            <div className={styles.volumeContent}>
+              <div className={styles.volumeImage}>
+                <svg className={styles.volumeSvg}>
+                  <use xlinkHref="img/icon/sprite.svg#icon-volume" />
+                </svg>
+              </div>
+              <div
+                className={classNames(styles.volumeProgress, styles.btn)}
+              ></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
