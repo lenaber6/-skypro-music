@@ -6,6 +6,7 @@ import TrackPlay from "./TrackPlay/TrackPlay";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { trackType } from "@/types";
 import ProgressBar from "./ProgressBar/ProgressBar";
+import { formatDuration } from "@/utils";
 
 type PlayBarType = {
   track: trackType;
@@ -19,7 +20,7 @@ export default function PlayBar({ track }: PlayBarType) {
   const [isLooping, setIsLooping] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5); // Начальная громкость установлена на 50%
 
-  const duration = audioRef.current?.duration;
+  const duration = audioRef.current?.duration || 0;
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -74,16 +75,16 @@ export default function PlayBar({ track }: PlayBarType) {
       <div className={styles.barContent}>
         <audio ref={audioRef} src={track.track_file} 
         onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}></audio>
-         <div className={styles.trackTimeBlock}>
-          <div>5:34</div>
+         {/* <div className={styles.trackTimeBlock}>
+          <div>5:59</div>
           <div> / </div>
           <div>6:90</div>
-        </div>
-        {/* <div className={styles.trackTimeBlock}>
-          <div>{durationFormat(currentTime)}</div>
-          <div> / </div>
-          <div>{durationFormat(duration)}</div>
         </div> */}
+        <div className={styles.trackTimeBlock}>
+          <div>{formatDuration(currentTime)}</div>
+          <div> / </div>
+          <div>{formatDuration(duration)}</div>
+        </div>
         <ProgressBar
           max={duration}
           value={currentTime}
