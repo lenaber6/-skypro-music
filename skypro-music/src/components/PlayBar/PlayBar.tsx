@@ -4,7 +4,7 @@ import styles from "./PlayBar.module.css";
 import classNames from "classnames";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import ProgressBar from "./ProgressBar/ProgressBar";
-import { formatDuration } from "@/utils";
+// import { formatDuration } from "@/utils";
 import { useAppSelector } from "@/hooks";
 
 export default function PlayBar() {
@@ -74,17 +74,18 @@ export default function PlayBar() {
               ref={audioRef}
               src={currentTrack.track_file}
               onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+              loop={isLooping}
             ></audio>
             {/* <div className={styles.trackTimeBlock}>
           <div>5:59</div>
           <div> / </div>
           <div>6:90</div>
         </div> */}
-            <div className={styles.trackTimeBlock}>
+            {/* <div className={styles.trackTimeBlock}>
               <div>{formatDuration(currentTime)}</div>
               <div> / </div>
               <div>{formatDuration(duration)}</div>
-            </div>
+            </div> */}
             <ProgressBar
               max={duration}
               value={currentTime}

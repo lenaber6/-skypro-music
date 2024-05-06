@@ -12,32 +12,31 @@ type TrackType = {
 };
 
 export default function Track({trackData, tracksData}: TrackType) {
-  // const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  // const audioRef = useRef<null | HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const audioRef = useRef<null | HTMLAudioElement>(null);
 
-  // const toggleActiveTrack = () => {
-  //   if (audioRef.current) {
-  //     if (isPlaying) {
-  //       return;
-  //     }
-  //   }
-  //   setIsPlaying((prev) => !prev);
-  // };
+  const toggleActiveTrack = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        return;
+      }
+    }
+    setIsPlaying((prev) => !prev);
+  };
   const {name, author, album, duration_in_seconds} = trackData;
   const dispatch = useAppDispatch(); 
   return(
         <div   onClick={() => dispatch(setCurrentTrack(trackData))} className={styles.playlistItem}>
-        {/* <div onClick={toggleActiveTrack} className={styles.playlistItem}> */}
 
-        <div className={styles.playlistTrack}>
+        <div onClick={toggleActiveTrack} className={styles.playlistTrack}>
           <div className={styles.trackTitle}>
             <div className={styles.trackTitleImage}>
-               {/* {isPlaying
-                ? <svg className={styles.playingDot}></svg> :  */}
+               {isPlaying
+                ? <svg className={styles.playingDot}></svg> :  
                 <svg className={styles.trackTitleSvg}>
                 <use xlinkHref="img/icon/sprite.svg#icon-note" />
               </svg>
-              {/* } */}
+               } 
             </div>
             <div className={styles.trackTitleText}>
               <span className={styles.trackTitleLink}>
