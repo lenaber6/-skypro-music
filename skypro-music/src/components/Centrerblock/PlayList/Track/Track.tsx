@@ -1,8 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
 import styles from "./Track.module.css";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setCurrentTrack } from "@/store/features/playlistSlice";
 import { trackType } from "@/types";
 
@@ -12,27 +11,25 @@ type TrackType = {
 };
 
 export default function Track({trackData, tracksData}: TrackType) {
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const audioRef = useRef<null | HTMLAudioElement>(null);
-
-  const toggleActiveTrack = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        return;
-      }
-    }
-    setIsPlaying((prev) => !prev);
-  };
-  const {name, author, album, duration_in_seconds} = trackData;
+  const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
+ 
+  const {name, author, album, duration_in_seconds, id} = trackData;
+  const isPlaying = currentTrack ? currentTrack.id === id: false;
   const dispatch = useAppDispatch(); 
-  return(
-        <div   onClick={() => dispatch(setCurrentTrack(trackData))} className={styles.playlistItem}>
 
-        <div onClick={toggleActiveTrack} className={styles.playlistTrack}>
+  const handleTrackClick = () => {
+    dispatch(setCurrentTrack({trackData, tracksData}));
+  }
+
+  return(
+    
+        <div    className={styles.playlistItem}>
+        <div className={styles.playlistTrack}>
           <div className={styles.trackTitle}>
-            <div className={styles.trackTitleImage}>
-               {isPlaying
-                ? <svg className={styles.playingDot}></svg> :  
+            <div onClick={handleTrackClick} className={styles.trackTitleImage}>
+            {isPlaying ? 
+                <svg className={styles.playingDot}></svg>
+                 :  
                 <svg className={styles.trackTitleSvg}>
                 <use xlinkHref="img/icon/sprite.svg#icon-note" />
               </svg>

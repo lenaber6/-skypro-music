@@ -120,7 +120,7 @@
     stroke: #696969;
   }
   .btnIcon:hover svg {
-    fill: transparent;
+    /* fill: transparent; */
     stroke: #acacac;
     cursor: pointer;
   }
