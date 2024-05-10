@@ -37,7 +37,7 @@ const playlistSlice = createSlice({ // С помощью функции createSl
       state.shuffledPlaylist = [...action.payload.tracksData].sort(() => 0.5 - Math.random());
       // чтобы поменять состояние, н. написать state.новое состояние
     },
-    setisPlaying: (state, action: PayloadAction<boolean>) => {
+    setIsPlaying: (state, action: PayloadAction<boolean>) => {
       state.isPlaying = action.payload;
     },
     setNextTrack: (state) => {
@@ -62,5 +62,5 @@ const playlistSlice = createSlice({ // С помощью функции createSl
   },
 });
 
-export const { setCurrentTrack, setisPlaying, setNextTrack, setPrevTrack, setIsShuffle } = playlistSlice.actions;
+export const { setCurrentTrack, setIsPlaying, setNextTrack, setPrevTrack, setIsShuffle } = playlistSlice.actions;
 export const playlistReducer = playlistSlice.reducer;
