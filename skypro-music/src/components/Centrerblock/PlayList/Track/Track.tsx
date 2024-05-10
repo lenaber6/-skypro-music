@@ -15,25 +15,30 @@ export default function Track({trackData, tracksData}: TrackType) {
  
   const {name, author, album, duration_in_seconds, id} = trackData;
   const isPlaying = currentTrack ? currentTrack.id === id: false;
+
   const dispatch = useAppDispatch(); 
 
   const handleTrackClick = () => {
     dispatch(setCurrentTrack({trackData, tracksData}));
-  }
-
+  };
+ 
   return(
     
-        <div    className={styles.playlistItem}>
+        <div className={styles.playlistItem}>
         <div className={styles.playlistTrack}>
           <div className={styles.trackTitle}>
             <div onClick={handleTrackClick} className={styles.trackTitleImage}>
-            {isPlaying ? 
+              {currentTrack?.id === id ? (
+                isPlaying ? (
                 <svg className={styles.playingDot}></svg>
-                 :  
+                 ) : (
+                <svg className={styles.pauseDot}></svg>
+                 )
+                ) : (
                 <svg className={styles.trackTitleSvg}>
                 <use xlinkHref="img/icon/sprite.svg#icon-note" />
-              </svg>
-               } 
+                </svg>
+              )} 
             </div>
             <div className={styles.trackTitleText}>
               <span className={styles.trackTitleLink}>

@@ -8,13 +8,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type PlaylistStateType =  { // Тип среза состояния
   currentTrack: null | trackType;       // Сохраним в состояние текущий трек в виде объекта
   playlist: trackType[],
+  isPlaying: boolean,
   shuffledPlaylist: trackType[],
+  isShuffle: boolean,
 }
 
 const initialState: PlaylistStateType = { // мы определяем начальное состояние initialState
   currentTrack: null,  // в котором authState указывает на статус аутентификации пользователя.
   playlist: [],
+  isPlaying: false,
   shuffledPlaylist: [],
+  isShuffle: false,
 };
 
 const playlistSlice = createSlice({ // С помощью функции createSlice мы создаем срез состояния (плэйлиста) с именем auth,
@@ -33,8 +37,30 @@ const playlistSlice = createSlice({ // С помощью функции createSl
       state.shuffledPlaylist = [...action.payload.tracksData].sort(() => 0.5 - Math.random());
       // чтобы поменять состояние, н. написать state.новое состояние
     },
+    setisPlaying: (state, action: PayloadAction<boolean>) => {
+      state.isPlaying = action.payload;
+    },
+    setNextTrack: (state) => {
+      const playlist = state.isShuffle ? state.shuffledPlaylist : state.playlist;
+      const currentTrackIndex = playlist.findIndex((trackData) => trackData.id === state.currentTrack?.id);
+      const newTrack = playlist[currentTrackIndex + 1];
+      if (newTrack) {
+        state.currentTrack = newTrack;
+      }
+    },
+    setPrevTrack: (state) => {
+      const playlist = state.isShuffle ? state.shuffledPlaylist : state.playlist;
+      const currentTrackIndex = playlist.findIndex((trackData) => trackData.id === state.currentTrack?.id);
+      const newTrack = playlist[currentTrackIndex - 1];
+      if (newTrack) {
+        state.currentTrack = newTrack;
+      }
+    },
+    setIsShuffle: (state, action: PayloadAction<boolean>) => {
+      state.isShuffle = action.payload;
+    }
   },
 });
 
-export const { setCurrentTrack } = playlistSlice.actions;
+export const { setCurrentTrack, setisPlaying, setNextTrack, setPrevTrack, setIsShuffle } = playlistSlice.actions;
 export const playlistReducer = playlistSlice.reducer;

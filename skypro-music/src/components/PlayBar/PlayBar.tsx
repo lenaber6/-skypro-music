@@ -5,9 +5,13 @@ import classNames from "classnames";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import ProgressBar from "./ProgressBar/ProgressBar";
 import { formatCurrentTimeDuration, formatDuration } from "@/utils";
-import { useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setNextTrack, setPrevTrack } from "@/store/features/playlistSlice";
+import { trackType } from "@/types";
 
+// export default function PlayBar(playlist: trackType[]) {
 export default function PlayBar() {
+
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const audioRef = useRef<null | HTMLAudioElement>(null);
 
@@ -15,21 +19,47 @@ export default function PlayBar() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLooping, setIsLooping] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5); // Начальная громкость установлена на 50%
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
   const duration = audioRef.current?.duration || 0;
 
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-
-    }
+  const dispatch = useAppDispatch();
+  
+  const handleNextTrackClick = () => {
+    dispatch(setNextTrack());
+  };
+  const handlePrevTrackClick = () => {
+    dispatch(setPrevTrack());
   };
 
+//   // eslint-disable-next-line react-hooks/exhaustive-deps
+//   const handleEnded = () => {
+//     // Проверяем, не является ли текущий трек последним в плейлисте
+//     if (currentTrackIndex < playlist.length - 1) {
+//         // Переход к следующему треку
+//         setCurrentTrackIndex(currentTrackIndex + 1);
+//     } else {
+//         // Или начинаем плейлист с начала
+//         setCurrentTrackIndex(0);
+//     }
+// };
+  // const togglePlay = () => {
+  //   if (audioRef.current) {
+  //     if (isPlaying) {
+  //       audioRef.current.pause();
+  //     } else {
+  //       audioRef.current.play();
+  //     }
+  //     setIsPlaying(!isPlaying);
+
+  //   }
+  // };
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      dispatch(setIsPlaying(!isPlaying));
+    }
+  };
   const toggleLoop = () => {
     if (audioRef.current) {
       if (isLooping) {
@@ -40,11 +70,32 @@ export default function PlayBar() {
     }
     setIsLooping((repeat) => !repeat);
   };
+
+//   // Устанавливаем источник аудио и обработчик события `ended` при изменении трека
+// useEffect(() => {
+//   const audio = audioRef.current!;
+//   audio.src = playlist[currentTrackIndex].track_file;
+//   audio.addEventListener('ended', handleEnded);
+//   // Воспроизводим новый трек
+//   audio.play();
+//   return () => {
+//       audio.removeEventListener('ended', handleEnded);
+//   };
+// },[currentTrackIndex, handleEnded, playlist]);
+
+useEffect(() => {
+  if(isPlaying) {
+    audioRef.current?.play();
+  } else {
+    audioRef.current?.pause();
+  }
+}, [isPlaying]);
+
   useEffect(() => {
     audioRef.current?.addEventListener("timeupdate", () =>
       setCurrentTime(audioRef.current!.currentTime)
     );
-  }, []);
+  }, [audioRef.current]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -91,10 +142,10 @@ export default function PlayBar() {
             <div className={styles.barPlayerBlock}>
               <div className={classNames(styles.barPlayer, styles.player)}>
                 <div className={styles.playerControls}>
-                  <div className={styles.playerBtnPrev}>
+                  <div onClick={handlePrevTrackClick} className={styles.playerBtnPrev}>
                     <svg className={styles.playerBtnPrevSvg}>
                       <use
-                        xlinkHref="img/icon/sprite.svg#icon-prev"
+                        xlinkHref="/img/icon/sprite.svg#icon-prev"
                         width={15}
                         height={14}
                       />
@@ -106,7 +157,7 @@ export default function PlayBar() {
                   >
                     <svg className={styles.playerBtnPlaySvg}>
                       <use
-                        xlinkHref={`img/icon/sprite.svg#${
+                        xlinkHref={`/img/icon/sprite.svg#${
                           isPlaying ? "icon-pause" : "icon-play"
                         }`}
                         width={22}
@@ -114,9 +165,9 @@ export default function PlayBar() {
                       />
                     </svg>
                   </div>
-                  <div className={styles.playerBtnNext}>
+                  <div onClick={handleNextTrackClick} className={styles.playerBtnNext}>
                     <svg className={styles.playerBtnNextSvg}>
-                      <use xlinkHref="img/icon/sprite.svg#icon-next" />
+                      <use xlinkHref="/img/icon/sprite.svg#icon-next" />
                     </svg>
                   </div>
                   <div
@@ -128,7 +179,7 @@ export default function PlayBar() {
                   >
                     <svg className={styles.playerBtnRepeatSvg}>
                       <use
-                        xlinkHref={`img/icon/sprite.svg#${
+                        xlinkHref={`/img/icon/sprite.svg#${
                           isLooping ? "icon-repeat-active" : "icon-repeat"
                         }`}
                       />
@@ -141,7 +192,7 @@ export default function PlayBar() {
                     )}
                   >
                     <svg className={styles.playerBtnShuffleSvg}>
-                      <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
+                      <use xlinkHref="/img/icon/sprite.svg#icon-shuffle" />
                     </svg>
                   </div>
                 </div>
@@ -149,7 +200,7 @@ export default function PlayBar() {
                 <div className={styles.trackPlayContain}>
                   <div className={styles.trackPlayImage}>
                     <svg className={styles.trackPlaySvg}>
-                      <use xlinkHref="img/icon/sprite.svg#icon-note" />
+                      <use xlinkHref="/img/icon/sprite.svg#icon-note" />
                     </svg>
                   </div>
                   <div className={styles.trackPlayAuthor}>
@@ -163,15 +214,15 @@ export default function PlayBar() {
                     </span>
                   </div>
                 </div>
-                <div className={styles.trackPlayLikeDis}>
+                <div className={styles.trackPlayLikeDislike}>
                   <div className={classNames(styles.trackPlayLike, styles.btnIcon)}>
                     <svg className={styles.trackPlayLikeSvg}>
-                      <use xlinkHref="img/icon/sprite.svg#icon-like" />
+                      <use xlinkHref="/img/icon/sprite.svg#icon-like" />
                     </svg>
                   </div>
                   <div className={classNames(styles.trackPlayDislike, styles.btnIcon)}>
                     <svg className={styles.trackPlayDislikeSvg}>
-                      <use xlinkHref="img/icon/sprite.svg#icon-dislike" />
+                      <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
                     </svg>
                   </div>
                 </div>
@@ -196,7 +247,7 @@ export default function PlayBar() {
                 <div className={styles.volumeContent}>
                   <div className={styles.volumeImage}>
                     <svg className={styles.volumeSvg}>
-                      <use xlinkHref="img/icon/sprite.svg#icon-volume" />
+                      <use xlinkHref="/img/icon/sprite.svg#icon-volume" />
                     </svg>
                   </div>
                   <div

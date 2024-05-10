@@ -114,15 +114,15 @@
   }
   
   .playerBtnRepeatSvg {
-    width: 18px;
-    height: 12px;
-    fill: transparent;
-    stroke: #696969;
+    width: 20px;
+    height: 18px;
+    /* fill: transparent;
+    stroke: #696969; */
   }
   .btnIcon:hover svg {
-    /* fill: transparent; */
-    stroke: #acacac;
-    cursor: pointer;
+    fill: transparent;
+    /* stroke: #acacac;
+    cursor: pointer; */
   }
   .btnIcon:active svg {
     height: 20px;
@@ -260,7 +260,7 @@
     color: #ffffff;
   }
   
-  .trackPlayLikeDis {
+  .trackPlayLikeDislike {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -342,7 +342,7 @@
     align-items: center;
     -webkit-box-pack: end;
     -ms-flex-pack: end;
-    justify-content: end;
+    justify-content: flex-end;
   }
   
   .volumeImage {

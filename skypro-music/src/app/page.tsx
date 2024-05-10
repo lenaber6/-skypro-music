@@ -23,10 +23,21 @@ export default function Home() {
           </div>
           <Sidebar />
         </main>
-
        <PlayBar />
         <footer className={styles.footer} />
       </div>
     </div>
   );
 }
+// Test
+//  describe("Nav", () => {
+//   it("should render a my playlist link", () => {
+//     renderWithProviders(<NavMenu isOpen={true} />);
+//     const exitLink = screen.getByText("Мой плейлист");
+
+//     expect(exitLink).toBeInTheDocument();
+//   });
+// });
+// import "@testing-library/jest-dom";
+
+// import { render, screen } from "@testing-library/react";
