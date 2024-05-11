@@ -6,20 +6,21 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import ProgressBar from "./ProgressBar/ProgressBar";
 import { formatCurrentTimeDuration, formatDuration } from "@/utils";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { setNextTrack, setPrevTrack } from "@/store/features/playlistSlice";
+import { setIsPlaying, setIsShuffle, setNextTrack, setPrevTrack } from "@/store/features/playlistSlice";
 import { trackType } from "@/types";
 
-// export default function PlayBar(playlist: trackType[]) {
-export default function PlayBar() {
+export default function PlayBar(playlist: trackType[]) {
+// export default function PlayBar() {
 
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const audioRef = useRef<null | HTMLAudioElement>(null);
 
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPlayed, setIsPlayed] = useState<boolean>(false);
   const [isLooping, setIsLooping] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5); // Начальная громкость установлена на 50%
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
+
 
   const duration = audioRef.current?.duration || 0;
 
@@ -32,17 +33,7 @@ export default function PlayBar() {
     dispatch(setPrevTrack());
   };
 
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-//   const handleEnded = () => {
-//     // Проверяем, не является ли текущий трек последним в плейлисте
-//     if (currentTrackIndex < playlist.length - 1) {
-//         // Переход к следующему треку
-//         setCurrentTrackIndex(currentTrackIndex + 1);
-//     } else {
-//         // Или начинаем плейлист с начала
-//         setCurrentTrackIndex(0);
-//     }
-// };
+ 
   // const togglePlay = () => {
   //   if (audioRef.current) {
   //     if (isPlaying) {
@@ -57,7 +48,7 @@ export default function PlayBar() {
 
   const togglePlay = () => {
     if (audioRef.current) {
-      dispatch(setIsPlaying(!isPlaying));
+      dispatch(setIsPlaying(!isPlayed));
     }
   };
   const toggleLoop = () => {
@@ -70,7 +61,25 @@ export default function PlayBar() {
     }
     setIsLooping((repeat) => !repeat);
   };
+  
+  // const toggleShuffle = () => {
+  //   if (audioRef.current) {
+  //     dispatch(setIsShuffle(!isShuffle));
+  //   }
+  // }
 
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   const handleEnded = () => {
+  //     // Проверяем, не является ли текущий трек последним в плейлисте
+  //     if (currentTrackIndex < playlist.length - 1) {
+  //         // Переход к следующему треку
+  //         setCurrentTrackIndex(currentTrackIndex + 1);
+  //     } else {
+  //         // Или начинаем плейлист с начала
+  //         setCurrentTrackIndex(0);
+  //     }
+  // };
+  
 //   // Устанавливаем источник аудио и обработчик события `ended` при изменении трека
 // useEffect(() => {
 //   const audio = audioRef.current!;
@@ -84,17 +93,18 @@ export default function PlayBar() {
 // },[currentTrackIndex, handleEnded, playlist]);
 
 useEffect(() => {
-  if(isPlaying) {
+  if(isPlayed) {
     audioRef.current?.play();
   } else {
     audioRef.current?.pause();
   }
-}, [isPlaying]);
+}, [isPlayed]);
 
   useEffect(() => {
     audioRef.current?.addEventListener("timeupdate", () =>
       setCurrentTime(audioRef.current!.currentTime)
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioRef.current]);
 
   useEffect(() => {
@@ -121,7 +131,9 @@ useEffect(() => {
     <>
       {currentTrack && (
         <div className={styles.bar}>
-          <div className={styles.barContent}>
+          <div 
+          // onClick={handleEnded} 
+          className={styles.barContent}>
             <audio
               ref={audioRef}
               src={currentTrack.track_file}
@@ -158,7 +170,7 @@ useEffect(() => {
                     <svg className={styles.playerBtnPlaySvg}>
                       <use
                         xlinkHref={`/img/icon/sprite.svg#${
-                          isPlaying ? "icon-pause" : "icon-play"
+                          isPlayed ? "icon-pause" : "icon-play"
                         }`}
                         width={22}
                         height={20}
@@ -185,7 +197,8 @@ useEffect(() => {
                       />
                     </svg>
                   </div>
-                  <div
+                   <div 
+                  //  {/*onClick={toggleShuffle} */}
                     className={classNames(
                       styles.playerBtnShuffle,
                       styles.btnIcon
@@ -203,12 +216,12 @@ useEffect(() => {
                       <use xlinkHref="/img/icon/sprite.svg#icon-note" />
                     </svg>
                   </div>
-                  <div className={styles.trackPlayAuthor}>
+                  <div onClick={togglePlay} className={styles.trackPlayAuthor}>
                     <span className={styles.trackPlayAuthorLink}>
                      {currentTrack.name}
                     </span>
                   </div>
-                  <div className={styles.trackPlayAlbum}>
+                  <div onClick={togglePlay} className={styles.trackPlayAlbum}>
                     <span className={styles.trackPlayAlbumLink}>
                     {currentTrack.author}
                     </span>

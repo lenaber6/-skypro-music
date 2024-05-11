@@ -4,14 +4,16 @@ import styles from "./Track.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setCurrentTrack } from "@/store/features/playlistSlice";
 import { trackType } from "@/types";
+import { useEffect, useState } from "react";
 
 type TrackType = {
   trackData: trackType,
   tracksData: trackType [],
 };
 
-export default function Track({trackData, tracksData}: TrackType) {
+export default function Track({trackData, tracksData}: TrackType, ) {
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
+
  
   const {name, author, album, duration_in_seconds, id} = trackData;
   const isPlaying = currentTrack ? currentTrack.id === id: false;
@@ -21,10 +23,12 @@ export default function Track({trackData, tracksData}: TrackType) {
   const handleTrackClick = () => {
     dispatch(setCurrentTrack({trackData, tracksData}));
   };
+
+ 
  
   return(
     
-        <div className={styles.playlistItem}>
+        <div  className={styles.playlistItem}>
         <div className={styles.playlistTrack}>
           <div className={styles.trackTitle}>
             <div onClick={handleTrackClick} className={styles.trackTitleImage}>
