@@ -58,6 +58,8 @@ const playlistSlice = createSlice({ // С помощью функции createSl
     },
     setIsShuffle: (state, action: PayloadAction<boolean>) => {
       state.isShuffle = action.payload;
+      console.log(action.payload);
+
     }
   },
 });

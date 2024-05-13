@@ -4,14 +4,13 @@ import styles from "./Track.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setCurrentTrack } from "@/store/features/playlistSlice";
 import { trackType } from "@/types";
-import { useEffect, useState } from "react";
 
 type TrackType = {
   trackData: trackType,
   tracksData: trackType [],
 };
 
-export default function Track({trackData, tracksData}: TrackType, ) {
+export default function Track({trackData, tracksData}: TrackType) {
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
 
  
@@ -33,20 +32,24 @@ export default function Track({trackData, tracksData}: TrackType, ) {
           <div className={styles.trackTitle}>
             <div onClick={handleTrackClick} className={styles.trackTitleImage}>
               {currentTrack?.id === id ? (
-                isPlaying ? (
+                isPlaying ? 
+                // (
                 <svg className={styles.playingDot}></svg>
-                 ) : (
+                //  ) 
+                 : 
+                //  (
                 <svg className={styles.pauseDot}></svg>
-                 )
+                //  )
                 ) : (
                 <svg className={styles.trackTitleSvg}>
                 <use xlinkHref="img/icon/sprite.svg#icon-note" />
                 </svg>
               )} 
             </div>
+           
             <div className={styles.trackTitleText}>
-              <span className={styles.trackTitleLink}>
-              {name} <span className={styles.trackTitleSpan} />
+              <span  className={styles.trackTitleLink}>
+              {name} <span  className={styles.trackTitleSpan} />
               </span>
             </div>
           </div>

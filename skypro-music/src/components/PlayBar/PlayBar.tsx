@@ -9,11 +9,13 @@ import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setIsPlaying, setIsShuffle, setNextTrack, setPrevTrack } from "@/store/features/playlistSlice";
 import { trackType } from "@/types";
 
-export default function PlayBar(playlist: trackType[]) {
-// export default function PlayBar() {
+// export default function PlayBar(playlist: trackType[]) {
+export default function PlayBar() {
 
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const audioRef = useRef<null | HTMLAudioElement>(null);
+  // const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
+
 
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isPlayed, setIsPlayed] = useState<boolean>(false);
@@ -34,23 +36,23 @@ export default function PlayBar(playlist: trackType[]) {
   };
 
  
-  // const togglePlay = () => {
-  //   if (audioRef.current) {
-  //     if (isPlaying) {
-  //       audioRef.current.pause();
-  //     } else {
-  //       audioRef.current.play();
-  //     }
-  //     setIsPlaying(!isPlaying);
-
-  //   }
-  // };
-
   const togglePlay = () => {
     if (audioRef.current) {
-      dispatch(setIsPlaying(!isPlayed));
+      if (isPlayed) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlayed(!isPlayed);
+
     }
   };
+
+  // const togglePlay = () => {
+  //   if (audioRef.current) {
+  //     dispatch(setIsPlaying(!isPlaying));
+  //   }
+  // };
   const toggleLoop = () => {
     if (audioRef.current) {
       if (isLooping) {
