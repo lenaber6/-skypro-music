@@ -35,6 +35,7 @@ const playlistSlice = createSlice({ // С помощью функции createSl
       state.currentTrack = action.payload.trackData; // установка текущего трека в глобальное состояние
       state.playlist = action.payload.tracksData; // установка текущего плэйлиста в глобальное состояние
       state.shuffledPlaylist = [...action.payload.tracksData].sort(() => 0.5 - Math.random());
+      state.isPlaying = true;
       // чтобы поменять состояние, н. написать state.новое состояние
     },
     setIsPlaying: (state, action: PayloadAction<boolean>) => {

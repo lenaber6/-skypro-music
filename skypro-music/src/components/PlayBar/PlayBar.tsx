@@ -14,11 +14,10 @@ export default function PlayBar() {
 
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const audioRef = useRef<null | HTMLAudioElement>(null);
-  // const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
+  const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
 
 
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [isPlayed, setIsPlayed] = useState<boolean>(false);
   const [isLooping, setIsLooping] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5); // Начальная громкость установлена на 50%
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
@@ -38,21 +37,10 @@ export default function PlayBar() {
  
   const togglePlay = () => {
     if (audioRef.current) {
-      if (isPlayed) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlayed(!isPlayed);
-
+      dispatch(setIsPlaying(!isPlaying));
     }
   };
 
-  // const togglePlay = () => {
-  //   if (audioRef.current) {
-  //     dispatch(setIsPlaying(!isPlaying));
-  //   }
-  // };
   const toggleLoop = () => {
     if (audioRef.current) {
       if (isLooping) {
@@ -95,19 +83,21 @@ export default function PlayBar() {
 // },[currentTrackIndex, handleEnded, playlist]);
 
 useEffect(() => {
-  if(isPlayed) {
+  if(isPlaying) {
+    console.log(audioRef.current);
     audioRef.current?.play();
   } else {
     audioRef.current?.pause();
   }
-}, [isPlayed]);
+}, [isPlaying, currentTrack]);
 
   useEffect(() => {
-    audioRef.current?.addEventListener("timeupdate", () =>
+    const ref = audioRef.current;
+    ref?.addEventListener("timeupdate", () =>
       setCurrentTime(audioRef.current!.currentTime)
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audioRef.current]);
+ 
+  }, [currentTrack]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -141,6 +131,7 @@ useEffect(() => {
               src={currentTrack.track_file}
               onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
               loop={isLooping}
+              // controls
             ></audio>
             <div className={styles.trackTimeBlock}>
               <div>{formatCurrentTimeDuration(currentTime)}</div>
@@ -172,7 +163,7 @@ useEffect(() => {
                     <svg className={styles.playerBtnPlaySvg}>
                       <use
                         xlinkHref={`/img/icon/sprite.svg#${
-                          isPlayed ? "icon-pause" : "icon-play"
+                          isPlaying ? "icon-pause" : "icon-play"
                         }`}
                         width={22}
                         height={20}
