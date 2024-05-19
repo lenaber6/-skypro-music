@@ -7,6 +7,7 @@ import classNames from "classnames";
 import { filters } from "./filtersdata";
 
 export default function Filters() {
+  
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   function handleFilterClick(newFilter: string) {
     setActiveFilter((prev) => (prev === newFilter ? null : newFilter));

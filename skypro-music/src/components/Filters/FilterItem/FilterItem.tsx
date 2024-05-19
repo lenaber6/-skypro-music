@@ -8,7 +8,7 @@ type FilterItemType = {
   isOpened: boolean;
 };
 
-export default function FilterItem({ handleFilterClick,title, list, isOpened }: FilterItemType) {
+export default function FilterItem({ handleFilterClick, title, list, isOpened }: FilterItemType) {
 
   return (
     <div className={styles.wrapper}>

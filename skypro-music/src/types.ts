@@ -6,7 +6,7 @@ last_name: string,
 email: string,
 }
 export type trackType = {
-    id: number,
+        id: number,
         name: string,
         author: string,
         release_date: string,
@@ -15,7 +15,7 @@ export type trackType = {
         album: string,
         logo: string | null,
         track_file: string,
-        stared_user: userType[]
+        stared_user: userType[],
 }
 export type ErrorType = {
     error: Error;
