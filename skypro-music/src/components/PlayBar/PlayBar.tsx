@@ -71,6 +71,7 @@ export default function PlayBar(playlist: trackType[]) {
   
   // Устанавливаем источник аудио и обработчик события `ended` при изменении трека
 useEffect(() => {
+  if (audioRef.current) {
   const audio = audioRef.current!;
   audio.src = playlist[currentTrackIndex].track_file;
   audio.addEventListener('ended', handleEnded);
@@ -79,6 +80,7 @@ useEffect(() => {
   return () => {
       audio.removeEventListener('ended', handleEnded);
   };
+}
 },[currentTrackIndex, handleEnded, playlist]);
 
 useEffect(() => {
