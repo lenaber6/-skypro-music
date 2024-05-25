@@ -7,16 +7,15 @@ import ProgressBar from "./ProgressBar/ProgressBar";
 import { formatCurrentTimeDuration, formatDuration } from "@/utils";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setIsPlaying, setIsShuffle, setNextTrack, setPrevTrack } from "@/store/features/playlistSlice";
-import { trackType } from "@/types";
 
-export default function PlayBar(playlist: trackType[]) {
-// export default function PlayBar() {
+// export default function PlayBar(playlist: trackType[]) {
+export default function PlayBar() {
 
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const audioRef = useRef<null | HTMLAudioElement>(null);
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
   const isShuffle = useAppSelector((state) => state.playlist.isShuffle);
-
+  const playlist = useAppSelector((state) => state.playlist.playlist);
 
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isLooping, setIsLooping] = useState<boolean>(false);
@@ -29,6 +28,7 @@ export default function PlayBar(playlist: trackType[]) {
   
   const handleNextTrackClick = () => {
     dispatch(setNextTrack());
+    // dispatch(setIsPlaying(true));
   };
   const handlePrevTrackClick = () => {
     dispatch(setPrevTrack());
@@ -73,7 +73,7 @@ export default function PlayBar(playlist: trackType[]) {
 useEffect(() => {
   if (audioRef.current) {
   const audio = audioRef.current!;
-  audio.src = playlist[currentTrackIndex].track_file;
+  audio.src = playlist[currentTrackIndex].track;
   audio.addEventListener('ended', handleEnded);
   // Воспроизводим новый трек
   audio.play();
@@ -85,7 +85,6 @@ useEffect(() => {
 
 useEffect(() => {
   if(isPlaying) {
-    console.log(audioRef.current);
     audioRef.current?.play();
   } else {
     audioRef.current?.pause();
@@ -125,14 +124,15 @@ useEffect(() => {
       {currentTrack && (
         <div className={styles.bar}>
           <div 
-          onClick={handleEnded} 
+          // onClick={handleEnded} 
           className={styles.barContent}>
             <audio
               ref={audioRef}
               src={currentTrack.track_file}
               onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
               loop={isLooping}
-              // controls
+              controls
+              className={styles.controls}
             ></audio>
             <div className={styles.trackTimeBlock}>
               <div>{formatCurrentTimeDuration(currentTime)}</div>
@@ -213,6 +213,7 @@ useEffect(() => {
                   <div  className={styles.trackPlayAuthor}>
                     <span className={styles.trackPlayAuthorLink}>
                      {currentTrack.name}
+                     {/* {playlist[currentTrackIndex].name} */}
                     </span>
                   </div>
                   <div  className={styles.trackPlayAlbum}>
