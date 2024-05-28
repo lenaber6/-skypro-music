@@ -51,12 +51,6 @@ export default function PlayBar() {
     setIsLooping((repeat) => !repeat);
   };
   
-  // const toggleShuffle = () => {
-  //   if (audioRef.current) {
-  //     dispatch(setIsShuffle(!isShuffle));
-  //   }
-  // }
-
   const handleShuffleTrack = () => {
     console.log(isShuffle);
     if (isShuffle) {
@@ -90,6 +84,22 @@ export default function PlayBar() {
 //   };
 // }
 // },[currentTrackIndex, handleEnded, playlist]);
+
+useEffect(() => {
+  if (audioRef.current) {
+    audioRef.current.onended = () => {
+      dispatch(setNextTrack());
+
+      if (currentTrackIndex < playlist.length - 1) {
+        // Переход к следующему треку
+        setCurrentTrackIndex(currentTrackIndex + 1);
+    } else {
+        // Или начинаем плейлист с начала
+        setCurrentTrackIndex(0);
+    }
+    };
+  }
+}, [currentTrackIndex, dispatch, playlist.length]);
 
 useEffect(() => {
   if(isPlaying) {
@@ -131,17 +141,8 @@ useEffect(() => {
     <>
       {currentTrack && (
         <div className={styles.bar}>
-          <div 
-          // onClick={handleEnded} 
+          <div   
           className={styles.barContent}>
-            {/* <audio
-              ref={audioRef}
-              src={currentTrack.track_file}
-              onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-              loop={isLooping}
-              controls
-              className={styles.controls}
-            ></audio> */}
             <div className={styles.trackTimeBlock}>
               <div>{formatCurrentTimeDuration(currentTime)}</div>
               <div> / </div>
@@ -152,6 +153,8 @@ useEffect(() => {
               value={currentTime}
               step={0.01}
               onChange={handleSeek}
+        
+
             />
             <div className={styles.barPlayerBlock}>
               <div className={classNames(styles.barPlayer, styles.player)}>
