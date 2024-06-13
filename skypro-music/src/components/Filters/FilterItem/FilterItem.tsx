@@ -21,11 +21,14 @@ export default function FilterItem({ handleFilterClick, title, list, isOpened }:
       </div>
      
      {isOpened &&( 
+      
         <ul className={styles.filterList}>
+          <div className={styles.filterListDiv}>
         {list.map((item) => (
           <li className={styles.filterItem}
           key={item}>{item}</li>
         ))}
+        </div>
       </ul>)}
     </div>
   );

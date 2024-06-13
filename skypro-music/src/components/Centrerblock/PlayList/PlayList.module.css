@@ -17,7 +17,9 @@
     -ms-flex-direction: column;
     flex-direction: column;
     overflow-y: auto;
+    scrollbar-width: none;
   }
+  
   /* .playlist {
 
   } */
