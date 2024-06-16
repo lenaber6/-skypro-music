@@ -6,6 +6,7 @@ last_name: string,
 email: string,
 }
 export type trackType = {
+        track: string;
         id: number,
         name: string,
         author: string,

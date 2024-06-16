@@ -7,7 +7,6 @@ import ProgressBar from "./ProgressBar/ProgressBar";
 import { formatCurrentTimeDuration, formatDuration } from "@/utils";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setIsPlaying, setIsShuffle, setNextTrack, setPrevTrack } from "@/store/features/playlistSlice";
-import { trackType } from "@/types";
 
 // export default function PlayBar(playlist: trackType[]) {
 export default function PlayBar() {
@@ -15,13 +14,13 @@ export default function PlayBar() {
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const audioRef = useRef<null | HTMLAudioElement>(null);
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
-
+  const isShuffle = useAppSelector((state) => state.playlist.isShuffle);
+  const playlist = useAppSelector((state) => state.playlist.playlist);
 
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isLooping, setIsLooping] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5); // Начальная громкость установлена на 50%
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
-
 
   const duration = audioRef.current?.duration || 0;
 
@@ -29,11 +28,11 @@ export default function PlayBar() {
   
   const handleNextTrackClick = () => {
     dispatch(setNextTrack());
+    // dispatch(setIsPlaying(true));
   };
   const handlePrevTrackClick = () => {
     dispatch(setPrevTrack());
   };
-
  
   const togglePlay = () => {
     if (audioRef.current) {
@@ -52,39 +51,33 @@ export default function PlayBar() {
     setIsLooping((repeat) => !repeat);
   };
   
-  // const toggleShuffle = () => {
-  //   if (audioRef.current) {
-  //     dispatch(setIsShuffle(!isShuffle));
-  //   }
-  // }
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   const handleEnded = () => {
-  //     // Проверяем, не является ли текущий трек последним в плейлисте
-  //     if (currentTrackIndex < playlist.length - 1) {
-  //         // Переход к следующему треку
-  //         setCurrentTrackIndex(currentTrackIndex + 1);
-  //     } else {
-  //         // Или начинаем плейлист с начала
-  //         setCurrentTrackIndex(0);
-  //     }
-  // };
+  const handleShuffleTrack = () => {
+    console.log(isShuffle);
+    if (isShuffle) {
+      dispatch(setIsShuffle(false));
+    } else {
+      dispatch(setIsShuffle(true));
+    }
+  };
   
-//   // Устанавливаем источник аудио и обработчик события `ended` при изменении трека
-// useEffect(() => {
-//   const audio = audioRef.current!;
-//   audio.src = playlist[currentTrackIndex].track_file;
-//   audio.addEventListener('ended', handleEnded);
-//   // Воспроизводим новый трек
-//   audio.play();
-//   return () => {
-//       audio.removeEventListener('ended', handleEnded);
-//   };
-// },[currentTrackIndex, handleEnded, playlist]);
+useEffect(() => {
+  if (audioRef.current) {
+    audioRef.current.onended = () => {
+      dispatch(setNextTrack());
+
+      if (currentTrackIndex < playlist.length - 1) {
+        // Переход к следующему треку
+        setCurrentTrackIndex(currentTrackIndex + 1);
+    } else {
+        // Или начинаем плейлист с начала
+        setCurrentTrackIndex(0);
+    }
+    };
+  }
+}, [currentTrackIndex, dispatch, playlist.length]);
 
 useEffect(() => {
   if(isPlaying) {
-    console.log(audioRef.current);
     audioRef.current?.play();
   } else {
     audioRef.current?.pause();
@@ -123,16 +116,8 @@ useEffect(() => {
     <>
       {currentTrack && (
         <div className={styles.bar}>
-          <div 
-          // onClick={handleEnded} 
+          <div   
           className={styles.barContent}>
-            <audio
-              ref={audioRef}
-              src={currentTrack.track_file}
-              onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-              loop={isLooping}
-              // controls
-            ></audio>
             <div className={styles.trackTimeBlock}>
               <div>{formatCurrentTimeDuration(currentTime)}</div>
               <div> / </div>
@@ -143,6 +128,8 @@ useEffect(() => {
               value={currentTime}
               step={0.01}
               onChange={handleSeek}
+        
+
             />
             <div className={styles.barPlayerBlock}>
               <div className={classNames(styles.barPlayer, styles.player)}>
@@ -191,14 +178,17 @@ useEffect(() => {
                     </svg>
                   </div>
                    <div 
-                  //  {/*onClick={toggleShuffle} */}
+                   onClick={handleShuffleTrack} 
                     className={classNames(
                       styles.playerBtnShuffle,
                       styles.btnIcon
                     )}
                   >
                     <svg className={styles.playerBtnShuffleSvg}>
-                      <use xlinkHref="/img/icon/sprite.svg#icon-shuffle" />
+                      <use xlinkHref={`/img/icon/sprite.svg#${
+                        isShuffle ? "icon-shuffle-active" : "icon-shuffle"
+                       }`}
+                        />
                     </svg>
                   </div>
                 </div>
@@ -209,12 +199,13 @@ useEffect(() => {
                       <use xlinkHref="/img/icon/sprite.svg#icon-note" />
                     </svg>
                   </div>
-                  <div onClick={togglePlay} className={styles.trackPlayAuthor}>
+                  <div  className={styles.trackPlayAuthor}>
                     <span className={styles.trackPlayAuthorLink}>
                      {currentTrack.name}
+                     {/* {playlist[currentTrackIndex].name} */}
                     </span>
                   </div>
-                  <div onClick={togglePlay} className={styles.trackPlayAlbum}>
+                  <div  className={styles.trackPlayAlbum}>
                     <span className={styles.trackPlayAlbumLink}>
                     {currentTrack.author}
                     </span>
@@ -238,6 +229,8 @@ useEffect(() => {
                 <audio
                   ref={audioRef}
                   src={currentTrack.track_file}
+                  onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+                  loop={isLooping}
                   controls
                   className={styles.controls}
                 ></audio>

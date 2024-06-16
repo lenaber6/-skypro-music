@@ -47,6 +47,8 @@ const playlistSlice = createSlice({ // С помощью функции createSl
       const newTrack = playlist[currentTrackIndex + 1];
       if (newTrack) {
         state.currentTrack = newTrack;
+      } else {
+        state.currentTrack = playlist[0];
       }
     },
     setPrevTrack: (state) => {
@@ -55,12 +57,12 @@ const playlistSlice = createSlice({ // С помощью функции createSl
       const newTrack = playlist[currentTrackIndex - 1];
       if (newTrack) {
         state.currentTrack = newTrack;
+      }  else {
+        state.currentTrack = playlist[0];
       }
     },
     setIsShuffle: (state, action: PayloadAction<boolean>) => {
       state.isShuffle = action.payload;
-      console.log(action.payload);
-
     }
   },
 });

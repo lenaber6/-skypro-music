@@ -29,16 +29,12 @@ export default function Track({ trackData, tracksData }: TrackType) {
         <div className={styles.trackTitle}>
           <div className={styles.trackTitleImage}>
             {currentTrack?.id === id ? (
-              isPlaying ? (
-                // (
+              isPlayingIcon ? (
                 <svg className={styles.playingDot}></svg>
               ) : (
-                //  )
-                //  (
                 <svg className={styles.pauseDot}></svg>
               )
             ) : (
-              //  )
               <svg className={styles.trackTitleSvg}>
                 <use xlinkHref="img/icon/sprite.svg#icon-note" />
               </svg>

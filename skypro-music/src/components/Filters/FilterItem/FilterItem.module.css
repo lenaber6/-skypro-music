@@ -1,6 +1,7 @@
   .wrapper{
     position: relative;
     left: 10px;
+    
   }
   .filterButton {
     font-style: normal;
@@ -10,6 +11,7 @@
     border: 1px solid #ffffff;
     border-radius: 60px;
     padding: 6px 20px;
+    
   }
   .filterButton:not(:last-child) {
     margin-right: 10px;
@@ -24,20 +26,38 @@
     color: #ad61ff;
     cursor: pointer;
   }
-  .filterList {
+  .filterListDiv {
     display: flex;
+    flex-direction: column;
+    align-items: start;
+    overflow-y: auto;
+    width: 180px;
+    height: 200px;
+    gap: 20px;
+  }
+  .filterListDiv::-webkit-scrollbar {
+    width: 5px; /* Ширина всего элемента навигации */
+  }
+  
+  .filterListDiv::-webkit-scrollbar-track {
+    background: #4e4e4e; /* Цвет дорожки */
+  }
+  
+  .filterListDiv::-webkit-scrollbar-thumb {
+    background-color: #ffffff; /* Цвет бегунка */
+    border-radius: 20px; /* Округление бегунка */
+    border: 3px solid #ffffff; /* Оформление границ бегунка */
+  }
+  .filterList {
     position: absolute;
-    width: 248px;
-    height: 305px;
     top: 45px;
-    padding: 34px 0px 0px 0px;
-    gap: 10px;
+    padding: 34px;
     border-radius: 8px;
     opacity: 0px;
     background: #313131;
-    flex-direction: column;
-    align-items: center;
   }
+  
+  
   .filterItem{
    font-family: "Montserrrat", sans-serif;
    font-size: 20px;

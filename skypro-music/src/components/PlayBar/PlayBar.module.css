@@ -121,8 +121,8 @@
   }
   .btnIcon:hover svg {
     fill: transparent;
-    /* stroke: #acacac;
-    cursor: pointer; */
+    stroke: #acacac;
+    cursor: pointer;
   }
   .btnIcon:active svg {
     height: 20px;
@@ -132,10 +132,11 @@
   }
   
   .btnIcon:active  {
-    fill: #696969;
+    fill:transparent;
     stroke: #ffffff;
     cursor: pointer;
   }
+
   .playerBtnShuffle {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -146,10 +147,10 @@
   }
   
   .playerBtnShuffleSvg {
-    width: 19px;
-    height: 12px;
+    width: 20px;
+    height: 18px;
     fill: transparent;
-    stroke: #696969;
+    /* stroke: #696969; */
   }
 
   .btn {
@@ -296,7 +297,7 @@
     fill: transparent;
     stroke: #696969;
   }
-  .btnIcon:hover svg {
+  /* .btnIcon:hover svg {
     fill: transparent;
     stroke: #acacac;
     cursor: pointer;
@@ -311,7 +312,7 @@
     fill: #696969;
     stroke: #ffffff;
     cursor: pointer;
-  }
+  } */
   .barVolumeBlock {
     width: auto;
     display: -webkit-box;
