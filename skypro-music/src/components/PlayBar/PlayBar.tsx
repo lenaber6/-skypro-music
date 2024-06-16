@@ -2,7 +2,7 @@
 
 import styles from "./PlayBar.module.css";
 import classNames from "classnames";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import ProgressBar from "./ProgressBar/ProgressBar";
 import { formatCurrentTimeDuration, formatDuration } from "@/utils";
 import { useAppDispatch, useAppSelector } from "@/hooks";
@@ -98,12 +98,12 @@ useEffect(() => {
     }
   }, [volume]);
 
-  const handleSeek = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleSeek = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
       setCurrentTime(Number(event.target.value));
       audioRef.current.currentTime = Number(event.target.value); // Преобразовали строку в число
     }
-  };
+  }, []);
   const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
     let newVolume = Number(event.target.value);
     if (audioRef.current) {
@@ -128,8 +128,6 @@ useEffect(() => {
               value={currentTime}
               step={0.01}
               onChange={handleSeek}
-        
-
             />
             <div className={styles.barPlayerBlock}>
               <div className={classNames(styles.barPlayer, styles.player)}>

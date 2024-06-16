@@ -1,18 +1,41 @@
+/* eslint-disable @next/next/no-async-client-component */
+"use client";
+
 import classNames from "classnames";
 import styles from "./PlayList.module.css";
 import Track from "./Track/Track";
-import { ErrorType, trackType } from "@/types";
+import { trackType } from "@/types";
 import { getTracks } from "@/api/tracks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setInitialTracks } from "@/store/features/playlistSlice";
+import { useEffect, useState } from "react";
+import Search from "../Search/Search";
+import Filters from "@/components/Filters/Filters";
 
-export default async function PlayList() {
+export default function PlayList() {
+  const dispatch = useAppDispatch();
+
+  const[tracks, setTracks] = useState<trackType[]>([]);
+  const filteredTracks = useAppSelector((state) => state.playlist.filteredTracks);
+
     let tracksData: trackType[];
-  try {
-    tracksData = await getTracks();
-  } catch (error: unknown) {
-    throw new Error('Ошибка');
-  } 
+
+    useEffect(() => {
+getTracks().then((tracksData) => {
+  setTracks(tracksData);
+  dispatch(setInitialTracks({initialTracks: tracksData}));
+});
+    }, [dispatch]);
+ 
+
   // В реакт получали данные из апи ч-з юзЭффект и состояние, а здесь будет ч-з редакс 
     return(
+      <>
+      <Search/>
+      {/* <Filters tracksData={tracks}/> */}
+      <Filters />
+
+
         <div className={classNames(styles.centerblockContent, styles.contentPlaylist)}>
         <div className={classNames(styles.contentTitle, styles.playlistTitle)}>
           <div className={classNames(styles.playlistTitleCol, styles.col01)}>Трек</div>
@@ -25,13 +48,14 @@ export default async function PlayList() {
           </div>
         </div>
         <div className={classNames(styles.contentPlaylist, styles.playlist)}>
-         {tracksData.map((trackData) => (
-          // eslint-disable-next-line react/jsx-key
+         {filteredTracks?.map((trackData) => (
           <Track 
              trackData={trackData}
-             tracksData={tracksData}
+             tracksData={tracks}
+             key={trackData.id}
              />))}
         </div>
       </div>
+      </>
     )
 }
