@@ -32,9 +32,3 @@ dispatch(setFilters({searchValue: e.target.value}));
             </>
     )
 }
- // Обратите внимание, что функция компонента также является асинхронной
-//   export default async function HomePage() {
-//     const data = await getData();
-  
-//     return <main>/* Некий контент */</main>;
-//   }

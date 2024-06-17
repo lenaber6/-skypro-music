@@ -99,8 +99,8 @@
     cursor: pointer;
   }
   .SelectedFilter {
-    /* color: #ad61ff;
-    text-decoration: underline; */
+    color: #ad61ff;
+    text-decoration: underline;
     cursor: pointer;
   }
   
