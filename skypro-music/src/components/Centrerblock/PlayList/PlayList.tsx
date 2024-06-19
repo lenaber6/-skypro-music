@@ -1,46 +1,42 @@
-/* eslint-disable @next/next/no-async-client-component */
 "use client";
 
 import classNames from "classnames";
 import styles from "./PlayList.module.css";
 import Track from "./Track/Track";
 import { trackType } from "@/types";
-import { getTracks } from "@/api/tracks";
 import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useEffect } from "react";
 import { setInitialTracks } from "@/store/features/playlistSlice";
-import { useEffect, useState } from "react";
-import Search from "../Search/Search";
-import Filters from "@/components/Filters/Filters";
 
-export default function PlayList() {
+  export default function PlayList({ tracks, isFavourite }: { tracks: trackType[], isFavourite?: boolean }) {
+    console.log(tracks);
   const dispatch = useAppDispatch();
 
-  const[tracks, setTracks] = useState<trackType[]>([]);
-  const filteredTracks = useAppSelector((state) => state.playlist.filteredTracks);
-
-    let tracksData: trackType[];
-
-    useEffect(() => {
-getTracks().then((tracksData) => {
-  setTracks(tracksData);
-  dispatch(setInitialTracks({initialTracks: tracksData}));
-});
-    }, [dispatch]);
- 
-
-  // В реакт получали данные из апи ч-з юзЭффект и состояние, а здесь будет ч-з редакс 
-    return(
-      <>
-      <Search/>
-      {/* <Filters tracksData={tracks}/> */}
-      <Filters />
-
-
-        <div className={classNames(styles.centerblockContent, styles.contentPlaylist)}>
+  const filteredTracks = useAppSelector(
+    (state) => state.playlist.filteredTracks
+  );
+console.log(filteredTracks);
+  useEffect(() => {
+    dispatch(setInitialTracks({ initialTracks: tracks }));
+  }, [dispatch, tracks]);
+  return (
+    <>
+      <div
+        className={classNames(
+          styles.centerblockContent,
+          styles.contentPlaylist
+        )}
+      >
         <div className={classNames(styles.contentTitle, styles.playlistTitle)}>
-          <div className={classNames(styles.playlistTitleCol, styles.col01)}>Трек</div>
-          <div className={classNames(styles.playlistTitleCol, styles.col02)}>Исполнитель</div>
-          <div className={classNames(styles.playlistTitleCol, styles.col03)}>Альбом</div>
+          <div className={classNames(styles.playlistTitleCol, styles.col01)}>
+            Трек
+          </div>
+          <div className={classNames(styles.playlistTitleCol, styles.col02)}>
+            Исполнитель
+          </div>
+          <div className={classNames(styles.playlistTitleCol, styles.col03)}>
+            Альбом
+          </div>
           <div className={classNames(styles.playlistTitleCol, styles.col04)}>
             <svg className={styles.playlistTitleSvg}>
               <use xlinkHref="img/icon/sprite.svg#icon-watch" />
@@ -48,14 +44,20 @@ getTracks().then((tracksData) => {
           </div>
         </div>
         <div className={classNames(styles.contentPlaylist, styles.playlist)}>
-         {filteredTracks?.map((trackData) => (
-          <Track 
-             trackData={trackData}
-             tracksData={tracks}
-             key={trackData.id}
-             />))}
+          {tracks?.length === 0
+            ? "Нет треков, соответствующих параметрам поиска"
+            : ""}
+
+          {filteredTracks?.map((trackData) => (
+            <Track
+              trackData={trackData}
+              tracksData={tracks}
+              key={trackData.id}
+              isFavourite={isFavourite}
+            />
+          ))}
         </div>
       </div>
-      </>
-    )
+    </>
+  );
 }

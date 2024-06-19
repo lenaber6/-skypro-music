@@ -6,7 +6,10 @@ import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import ProgressBar from "./ProgressBar/ProgressBar";
 import { formatCurrentTimeDuration, formatDuration } from "@/utils";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { setIsPlaying, setIsShuffle, setNextTrack, setPrevTrack } from "@/store/features/playlistSlice";
+import { setInitialTracks, setIsPlaying, setIsShuffle, setNextTrack, setPrevTrack } from "@/store/features/playlistSlice";
+import { useUser } from "@/hooks/useUser";
+import { deleteFavouriteTracks, getTracks, postFavouriteTracks } from "@/api/tracks";
+import { updateToken } from "@/api/users";
 
 // export default function PlayBar(playlist: trackType[]) {
 export default function PlayBar() {
@@ -21,10 +24,17 @@ export default function PlayBar() {
   const [isLooping, setIsLooping] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5); // Начальная громкость установлена на 50%
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
+  const {user, token} = useUser();
 
   const duration = audioRef.current?.duration || 0;
 
   const dispatch = useAppDispatch();
+
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLiked(!!currentTrack?.isLiked);
+  }, [currentTrack]);
   
   const handleNextTrackClick = () => {
     dispatch(setNextTrack());
@@ -104,11 +114,72 @@ useEffect(() => {
       audioRef.current.currentTime = Number(event.target.value); // Преобразовали строку в число
     }
   }, []);
+
   const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
     let newVolume = Number(event.target.value);
     if (audioRef.current) {
       audioRef.current.volume = newVolume; // тут меняешь громость. audioRef это реф на тег audio твоего трека
       setVolume(newVolume); // если нужно в стейт положить
+    }
+  };
+
+  const handleLikeTrack = () => {
+    if (user?.email) {
+      if (!isLiked) {
+        postFavouriteTracks(currentTrack?.id!, token?.access!)
+          .then((data) => {
+            if (data.detail === "An error has occurred") {
+              throw new Error("Лайк уже поставлен");
+            }
+            getTracks().then((tracksData) => {
+              dispatch(setInitialTracks({ initialTracks: tracksData }));
+            });
+            setIsLiked(!isLiked);
+          })
+          .catch((error) => {
+            if (error.message === "401" && user) {
+              updateToken(token?.refresh!).then((data) => {
+                postFavouriteTracks(currentTrack?.id!, data.access).then(
+                  (data) => {
+                    if (data.detail === "An error has occurred") {
+                      throw new Error("Лайк уже поставлен");
+                    }
+                  }
+                );
+              });
+            } else {
+              console.log(error);
+            }
+          });
+      } else {
+        deleteFavouriteTracks(currentTrack?.id!, token?.access!)
+          .then((data) => {
+            if (data.detail === "An error has occurred") {
+              throw new Error("Лайк уже убран");
+            }
+            getTracks().then((tracksData) => {
+              dispatch(setInitialTracks({ initialTracks: tracksData }));
+            });
+            setIsLiked(!isLiked);
+          })
+          .catch((error) => {
+            if (error.message === "401" && user) {
+              updateToken(token?.refresh!).then((data) => {
+                deleteFavouriteTracks(currentTrack?.id!, data.access).then(
+                  (data) => {
+                    if (data.detail === "An error has occurred") {
+                      throw new Error("Лайк уже поставлен");
+                    }
+                  }
+                );
+              });
+            } else {
+              console.log(error);
+            }
+          });
+      }
+    } else {
+      alert("Для добавления трека, пожалуйста авторизуйтесь");
     }
   };
 
@@ -211,7 +282,9 @@ useEffect(() => {
                 </div>
                 <div className={styles.trackPlayLikeDislike}>
                   <div className={classNames(styles.trackPlayLike, styles.btnIcon)}>
-                    <svg className={styles.trackPlayLikeSvg}>
+                    <svg 
+                    onClick={handleLikeTrack}
+                    className={classNames(styles.trackPlayLikeSvg, isLiked ? styles.activeLike : null)}>
                       <use xlinkHref="/img/icon/sprite.svg#icon-like" />
                     </svg>
                   </div>

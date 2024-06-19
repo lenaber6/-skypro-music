@@ -48,7 +48,7 @@ const playlistSlice = createSlice({ // С помощью функции createSl
       state.initialTracks = action.payload.initialTracks;
       state.filteredTracks = action.payload.initialTracks;
     },
-    setCurrentTrack: (state, action: PayloadAction<{trackData:trackType, tracksData: trackType[]}>) => { // Устанавливаем текущий трек и выводим его в Прогрессбар
+    setCurrentTrack: (state, action: PayloadAction<{trackData:trackType, tracksData: trackType[], isPlaying:boolean}>) => { // Устанавливаем текущий трек и выводим его в Прогрессбар
       // 1й параметр - state- актуальное состояние на текущий момент
       // 2й параметр - action - из него мы получаем данные (это в action.payload ниже),
       // которые будем передавать при вызове этой функции. 
@@ -111,10 +111,10 @@ state.filteredTracks = state.initialTracks.filter((track) => {
   ? state.filterOptions.genre.includes(track.genre)
   : true;
   const hasSearchValue = track.name.toLowerCase()
-  .includes(state.filterOptions.searchValue.toLowerCase())
+  .includes(state.filterOptions.searchValue?.toLowerCase())
   || 
   track.author.toLowerCase()
-  .includes(state.filterOptions.searchValue.toLowerCase())
+  .includes(state.filterOptions.searchValue?.toLowerCase())
   ;
   return isAuthors && isGenres && hasSearchValue;
 });
