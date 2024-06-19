@@ -2,7 +2,7 @@ import { trackType } from "@/types";
 
 const apiUrl = 'https://skypro-music-api.skyeng.tech/catalog/track/all/';
 const apiCategoryUrl = 'https://skypro-music-api.skyeng.tech/catalog/selection/';
-const apiUrlFavoriteTracks =
+const apiUrlFavouriteTracks =
   "https://skypro-music-api.skyeng.tech/catalog/track/favorite/all/";
   const apiUrlTrack = "https://skypro-music-api.skyeng.tech/catalog/track/";
 
@@ -56,7 +56,7 @@ export async function getTracks() {
   //Функция получения лайков
 
   export async function getFavouriteTracks(token: string) {
-    const res = await fetch(apiUrlFavoriteTracks, {
+    const res = await fetch(apiUrlFavouriteTracks, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

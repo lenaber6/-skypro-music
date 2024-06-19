@@ -35,7 +35,7 @@ export default function FavouritePage() {
   return (
     <>
       <h2 className={styles.centerblockH2}>Мои треки</h2>
-      <PlayList tracks={tracksData} playlist={tracksData} isFavourite={true} />
+      <PlayList tracks={tracksData} isFavourite={true} />
     </>
   );
 }
