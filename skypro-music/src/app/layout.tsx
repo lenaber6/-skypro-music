@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat  } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "../store/ReduxProvider";
+import { UserProvider } from "@/contexts/user";
 
 const montserrat  = Montserrat ({ subsets: ["cyrillic"] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
       <ReduxProvider>  {/* После создания компонента ReduxProvider , последний шаг — 
       это обернуть ваше приложение в этот провайдер, чтобы состояние из Redux стало 
       доступно во всех компонентах вашего приложения.*/}
-      <body className={montserrat.className}>{children}</body>
+      <body className={montserrat.className}>
+        <UserProvider>{children}</UserProvider>
+        </body>
       </ReduxProvider>
     </html>
   );

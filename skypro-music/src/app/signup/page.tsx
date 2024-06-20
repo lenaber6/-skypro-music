@@ -1,9 +1,35 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./signup.module.css";
 import classNames from "classnames";
+import { ChangeEvent, useState } from "react";
+import { useUser } from "@/hooks/useUser";
+import { signupUser } from "@/api/users";
 
 export default function SignupPage() {
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+    username: "",
+  });
+  const { login } = useUser(); 
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLoginData({
+      ...loginData,
+      [name]: value,
+    });
+  };
+
+  const handleSignup = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    signupUser(loginData).then((data) => {
+      login(data, loginData);
+    });
+  };
     return(
        
   <div className={styles.wrapper}>
@@ -20,20 +46,23 @@ export default function SignupPage() {
             type="text"
             name="login"
             placeholder="Почта"
+            onChange={handleInputChange}
           />
           <input
             className={classNames(styles.modalInput, styles.passwardFirst)}
             type="password"
             name="password"
             placeholder="Пароль"
+            onChange={handleInputChange}
           />
           <input
             className={classNames(styles.modalInput, styles.passwardDouble)}
             type="password"
             name="password"
             placeholder="Повторите пароль"
+            onChange={handleInputChange}
           />
-          <button className={styles.modalBtnSignupEnt}>
+          <button onClick={handleSignup} className={styles.modalBtnSignupEnt}>
             <Link href="/">Зарегистрироваться</Link>
           </button>
         </form>

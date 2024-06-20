@@ -1,14 +1,19 @@
 "use client";
+
 import Image from "next/image";
 import styles from "./Navigation.module.css";
 import classNames from "classnames";
 import Link from "next/link";
 import { useState } from "react";
+import { useUser } from "@/hooks/useUser";
 
 export default function Navigation() {
   const [isOpened, setIsOpened] = useState<boolean>(false);
+  const {user} = useUser();
+
   return (
     <nav className={classNames(styles.mainNav, styles.nav)}>
+      <Link href={"/"}>
       <div className={classNames(styles.navLogo, styles.logo)}>
         <Image
           alt="Логотип:Скайпро.Музыка"
@@ -18,6 +23,7 @@ export default function Navigation() {
           src="/img/logo.png"
         />
       </div>
+      </Link>
       <div
         onClick={() => setIsOpened((prev) => !prev)}
         className={classNames(styles.navBurger, styles.burger)}
@@ -26,27 +32,29 @@ export default function Navigation() {
         <span className={styles.burgerLine} />
         <span className={styles.burgerLine} />
       </div>
-      {isOpened && (
+      {isOpened ? (
         <div className={classNames(styles.navMenu, styles.menu)}>
           <ul className={styles.menuList}>
             <li className={styles.menuItem}>
-              <Link href="#" className={styles.menuLink}>
+              <Link href="/" className={styles.menuLink}>
                 Главное
               </Link>
             </li>
             <li className={styles.menuItem}>
-              <Link href="#" className={styles.menuLink}>
+              <Link href="/tracks/favorite" className={styles.menuLink}>
                 Мой плейлист
               </Link>
             </li>
-            <li className={styles.menuItem}>
+            {!user?.email && (
+              <li className={styles.menuItem}>
               <Link href="/signin" className={styles.menuLink}>
                 Войти
               </Link>
             </li>
+            )}
           </ul>
         </div>
-      )}
+      ) : null}
     </nav>
   );
 }

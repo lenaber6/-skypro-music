@@ -2,15 +2,27 @@
 
 import styles from "./PlayBar.module.css";
 import classNames from "classnames";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import ProgressBar from "./ProgressBar/ProgressBar";
 import { formatCurrentTimeDuration, formatDuration } from "@/utils";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { setIsPlaying, setIsShuffle, setNextTrack, setPrevTrack } from "@/store/features/playlistSlice";
+import {
+  setInitialTracks,
+  setIsPlaying,
+  setIsShuffle,
+  setNextTrack,
+  setPrevTrack,
+} from "@/store/features/playlistSlice";
+import { useUser } from "@/hooks/useUser";
+import {
+  deleteFavouriteTracks,
+  getTracks,
+  postFavouriteTracks,
+} from "@/api/tracks";
+import { updateToken } from "@/api/users";
 
 // export default function PlayBar(playlist: trackType[]) {
 export default function PlayBar() {
-
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const audioRef = useRef<null | HTMLAudioElement>(null);
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
@@ -21,11 +33,18 @@ export default function PlayBar() {
   const [isLooping, setIsLooping] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5); // Начальная громкость установлена на 50%
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
+  const { user, token } = useUser();
 
   const duration = audioRef.current?.duration || 0;
 
   const dispatch = useAppDispatch();
-  
+
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLiked(!!currentTrack?.isLiked);
+  }, [currentTrack]);
+
   const handleNextTrackClick = () => {
     dispatch(setNextTrack());
     // dispatch(setIsPlaying(true));
@@ -33,7 +52,7 @@ export default function PlayBar() {
   const handlePrevTrackClick = () => {
     dispatch(setPrevTrack());
   };
- 
+
   const togglePlay = () => {
     if (audioRef.current) {
       dispatch(setIsPlaying(!isPlaying));
@@ -50,7 +69,7 @@ export default function PlayBar() {
     }
     setIsLooping((repeat) => !repeat);
   };
-  
+
   const handleShuffleTrack = () => {
     console.log(isShuffle);
     if (isShuffle) {
@@ -59,37 +78,36 @@ export default function PlayBar() {
       dispatch(setIsShuffle(true));
     }
   };
-  
-useEffect(() => {
-  if (audioRef.current) {
-    audioRef.current.onended = () => {
-      dispatch(setNextTrack());
 
-      if (currentTrackIndex < playlist.length - 1) {
-        // Переход к следующему треку
-        setCurrentTrackIndex(currentTrackIndex + 1);
-    } else {
-        // Или начинаем плейлист с начала
-        setCurrentTrackIndex(0);
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.onended = () => {
+        dispatch(setNextTrack());
+
+        if (currentTrackIndex < playlist.length - 1) {
+          // Переход к следующему треку
+          setCurrentTrackIndex(currentTrackIndex + 1);
+        } else {
+          // Или начинаем плейлист с начала
+          setCurrentTrackIndex(0);
+        }
+      };
     }
-    };
-  }
-}, [currentTrackIndex, dispatch, playlist.length]);
+  }, [currentTrackIndex, dispatch, playlist.length]);
 
-useEffect(() => {
-  if(isPlaying) {
-    audioRef.current?.play();
-  } else {
-    audioRef.current?.pause();
-  }
-}, [isPlaying, currentTrack]);
+  useEffect(() => {
+    if (isPlaying) {
+      audioRef.current?.play();
+    } else {
+      audioRef.current?.pause();
+    }
+  }, [isPlaying, currentTrack]);
 
   useEffect(() => {
     const ref = audioRef.current;
     ref?.addEventListener("timeupdate", () =>
       setCurrentTime(audioRef.current!.currentTime)
     );
- 
   }, [currentTrack]);
 
   useEffect(() => {
@@ -98,12 +116,13 @@ useEffect(() => {
     }
   }, [volume]);
 
-  const handleSeek = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleSeek = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
       setCurrentTime(Number(event.target.value));
       audioRef.current.currentTime = Number(event.target.value); // Преобразовали строку в число
     }
-  };
+  }, []);
+
   const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
     let newVolume = Number(event.target.value);
     if (audioRef.current) {
@@ -112,12 +131,71 @@ useEffect(() => {
     }
   };
 
+  const handleLikeTrack = () => {
+    if (user?.email) {
+      if (!isLiked) {
+        postFavouriteTracks(currentTrack?.id!, token?.access!)
+          .then((data) => {
+            if (data.detail === "An error has occurred") {
+              throw new Error("Лайк уже поставлен");
+            }
+            getTracks().then((tracksData) => {
+              dispatch(setInitialTracks({ initialTracks: tracksData }));
+            });
+            setIsLiked(!isLiked);
+          })
+          .catch((error) => {
+            if (error.message === "401" && user) {
+              updateToken(token?.refresh!).then((data) => {
+                postFavouriteTracks(currentTrack?.id!, data.access).then(
+                  (data) => {
+                    if (data.detail === "An error has occurred") {
+                      throw new Error("Лайк уже поставлен");
+                    }
+                  }
+                );
+              });
+            } else {
+              console.log(error);
+            }
+          });
+      } else {
+        deleteFavouriteTracks(currentTrack?.id!, token?.access!)
+          .then((data) => {
+            if (data.detail === "An error has occurred") {
+              throw new Error("Лайк уже убран");
+            }
+            getTracks().then((tracksData) => {
+              dispatch(setInitialTracks({ initialTracks: tracksData }));
+            });
+            setIsLiked(!isLiked);
+          })
+          .catch((error) => {
+            if (error.message === "401" && user) {
+              updateToken(token?.refresh!).then((data) => {
+                deleteFavouriteTracks(currentTrack?.id!, data.access).then(
+                  (data) => {
+                    if (data.detail === "An error has occurred") {
+                      throw new Error("Лайк уже поставлен");
+                    }
+                  }
+                );
+              });
+            } else {
+              console.log(error);
+            }
+          });
+      }
+    } else {
+      alert("Для добавления трека, пожалуйста авторизуйтесь");
+    }
+  };
+
   return (
     <>
       {currentTrack && (
         <div className={styles.bar}>
-          <div   
-          className={styles.barContent}>
+          <div className={styles.barContent}>
             <div className={styles.trackTimeBlock}>
               <div>{formatCurrentTimeDuration(currentTime)}</div>
               <div> / </div>
@@ -128,13 +206,14 @@ useEffect(() => {
               value={currentTime}
               step={0.01}
               onChange={handleSeek}
-        
-
             />
             <div className={styles.barPlayerBlock}>
               <div className={classNames(styles.barPlayer, styles.player)}>
                 <div className={styles.playerControls}>
-                  <div onClick={handlePrevTrackClick} className={styles.playerBtnPrev}>
+                  <div
+                    onClick={handlePrevTrackClick}
+                    className={styles.playerBtnPrev}
+                  >
                     <svg className={styles.playerBtnPrevSvg}>
                       <use
                         xlinkHref="/img/icon/sprite.svg#icon-prev"
@@ -157,7 +236,10 @@ useEffect(() => {
                       />
                     </svg>
                   </div>
-                  <div onClick={handleNextTrackClick} className={styles.playerBtnNext}>
+                  <div
+                    onClick={handleNextTrackClick}
+                    className={styles.playerBtnNext}
+                  >
                     <svg className={styles.playerBtnNextSvg}>
                       <use xlinkHref="/img/icon/sprite.svg#icon-next" />
                     </svg>
@@ -177,59 +259,85 @@ useEffect(() => {
                       />
                     </svg>
                   </div>
-                   <div 
-                   onClick={handleShuffleTrack} 
+                  <div
+                    onClick={handleShuffleTrack}
                     className={classNames(
                       styles.playerBtnShuffle,
                       styles.btnIcon
                     )}
                   >
                     <svg className={styles.playerBtnShuffleSvg}>
-                      <use xlinkHref={`/img/icon/sprite.svg#${
-                        isShuffle ? "icon-shuffle-active" : "icon-shuffle"
-                       }`}
+                      <use
+                        xlinkHref={`/img/icon/sprite.svg#${
+                          isShuffle ? "icon-shuffle-active" : "icon-shuffle"
+                        }`}
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div
+                  className={classNames(
+                    styles.playerTrackPlay,
+                    styles.trackPlay
+                  )}
+                >
+                  <div className={styles.trackPlayContain}>
+                    <div className={styles.trackPlayImage}>
+                      <svg className={styles.trackPlaySvg}>
+                        <use xlinkHref="/img/icon/sprite.svg#icon-note" />
+                      </svg>
+                    </div>
+                    <div className={styles.trackPlayAuthor}>
+                      <span className={styles.trackPlayAuthorLink}>
+                        {currentTrack.name}
+                        {/* {playlist[currentTrackIndex].name} */}
+                      </span>
+                    </div>
+                    <div className={styles.trackPlayAlbum}>
+                      <span className={styles.trackPlayAlbumLink}>
+                        {currentTrack.author}
+                      </span>
+                    </div>
+                  </div>
+                  <div className={styles.trackPlayLikeDislike}>
+                    <div
+                      className={classNames(
+                        styles.trackPlayLike,
+                        styles.btnIcon
+                      )}
+                    >
+                      <svg
+                        className={classNames(
+                          styles.trackPlayLikeSvg,
+                          isLiked ? styles.activeLike : null
+                        )}
+                      >
+                        <use
+                          onClick={handleLikeTrack}
+                          xlinkHref="/img/icon/sprite.svg#icon-like"
                         />
-                    </svg>
+                      </svg>
+                    </div>
+                    <div
+                      className={classNames(
+                        styles.trackPlayDislike,
+                        styles.btnIcon
+                      )}
+                    >
+                      <svg className={styles.trackPlayDislikeSvg}>
+                        <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-                <div className={classNames(styles.playerTrackPlay, styles.trackPlay)}>
-                <div className={styles.trackPlayContain}>
-                  <div className={styles.trackPlayImage}>
-                    <svg className={styles.trackPlaySvg}>
-                      <use xlinkHref="/img/icon/sprite.svg#icon-note" />
-                    </svg>
-                  </div>
-                  <div  className={styles.trackPlayAuthor}>
-                    <span className={styles.trackPlayAuthorLink}>
-                     {currentTrack.name}
-                     {/* {playlist[currentTrackIndex].name} */}
-                    </span>
-                  </div>
-                  <div  className={styles.trackPlayAlbum}>
-                    <span className={styles.trackPlayAlbumLink}>
-                    {currentTrack.author}
-                    </span>
-                  </div>
-                </div>
-                <div className={styles.trackPlayLikeDislike}>
-                  <div className={classNames(styles.trackPlayLike, styles.btnIcon)}>
-                    <svg className={styles.trackPlayLikeSvg}>
-                      <use xlinkHref="/img/icon/sprite.svg#icon-like" />
-                    </svg>
-                  </div>
-                  <div className={classNames(styles.trackPlayDislike, styles.btnIcon)}>
-                    <svg className={styles.trackPlayDislikeSvg}>
-                      <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
               </div>
               <div className={classNames(styles.barVolumeBlock, styles.volume)}>
                 <audio
                   ref={audioRef}
                   src={currentTrack.track_file}
-                  onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+                  onTimeUpdate={(e) =>
+                    setCurrentTime(e.currentTarget.currentTime)
+                  }
                   loop={isLooping}
                   controls
                   className={styles.controls}

@@ -136,6 +136,12 @@
     display: block;
     animation: bubble_out 0.6s ease-in-out infinite both;
   }
+  .likeButton:hover {
+    fill: gray;
+  }
+  .activeLike {
+    fill: #b672ff;
+  }
   
   @keyframes bubble_out {
     0%,
