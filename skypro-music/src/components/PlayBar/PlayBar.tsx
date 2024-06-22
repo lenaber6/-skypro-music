@@ -29,12 +29,17 @@ export default function PlayBar() {
   const duration = audioRef.current?.duration || 0;
 
   const dispatch = useAppDispatch();
-
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
-  useEffect(() => {
-    setIsLiked(!!currentTrack?.isLiked);
-  }, [currentTrack]);
+  const isLikedByUser =
+    isLiked || !!currentTrack?.stared_user.find((arg) => arg.id === user?.id);
+
+
+  // useEffect(() => {
+  //   setIsLiked(isLikedByUser);
+  // }, [currentTrack]);
+  console.log(isLikedByUser);
+
   
   const handleNextTrackClick = () => {
     dispatch(setNextTrack());
@@ -124,6 +129,7 @@ useEffect(() => {
   };
 
   const handleLikeTrack = () => {
+    setIsLiked(!isLiked);
     if (user?.email) {
       if (!isLiked) {
         postFavouriteTracks(currentTrack?.id!, token?.access!)
@@ -289,7 +295,9 @@ useEffect(() => {
                     </svg>
                   </div>
                   <div className={classNames(styles.trackPlayDislike, styles.btnIcon)}>
-                    <svg className={styles.trackPlayDislikeSvg}>
+                    <svg 
+                    onClick={handleLikeTrack}
+                    className={classNames(styles.trackPlayDislikeSvg, isLiked ? styles.activeLike : null)}>
                       <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
                     </svg>
                   </div>

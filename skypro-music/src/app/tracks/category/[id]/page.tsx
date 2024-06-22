@@ -32,7 +32,9 @@ export default async function CategoryPage({params}: CategoryType) {
     return(
         <>
         <h2 className={styles.centerblockH2}>{title}</h2>
-        <PlayList tracks={tracksData} playlist={tracksData} />
+        <PlayList tracks={tracksData} 
+        // playlist={tracksData}
+         />
         </>
 
     )

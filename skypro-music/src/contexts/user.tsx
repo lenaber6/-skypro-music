@@ -42,6 +42,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     setUser(newUser);
     localStorage.setItem("user", JSON.stringify(newUser));
     getToken(loginData).then((tokenData) => {
+      console.log("getToken");
       setToken(tokenData);
       localStorage.setItem("token", JSON.stringify(tokenData));
       router.push("/");

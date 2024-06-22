@@ -44,7 +44,7 @@ console.log(filteredTracks);
           </div>
         </div>
         <div className={classNames(styles.contentPlaylist, styles.playlist)}>
-          {tracks?.length === 0
+          {filteredTracks?.length === 0
             ? "Нет треков, соответствующих параметрам поиска"
             : ""}
 

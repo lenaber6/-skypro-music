@@ -119,11 +119,11 @@
     /* fill: transparent;
     stroke: #696969; */
   }
-  .btnIcon:hover svg {
+  /* .btnIcon:hover svg {
     fill: transparent;
     stroke: #acacac;
     cursor: pointer;
-  }
+  } */
   .btnIcon:active svg {
     height: 20px;
     fill: transparent;
@@ -286,7 +286,7 @@
   .trackPlayLikeSvg {
     width: 14px;
     height: 12px;
-    fill: transparent;
+    /* fill: transparent; */
     stroke: #696969;
   }
   
@@ -297,7 +297,7 @@
   .trackPlayDislikeSvg {
     width: 14.34px;
     height: 13px;
-    fill: transparent;
+    /* fill: transparent; */
     stroke: #696969;
   }
   /* .btnIcon:hover svg {

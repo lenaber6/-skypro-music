@@ -44,22 +44,22 @@ export default function SignupPage() {
           <input
             className={classNames(styles.modalInput, styles.login)}
             type="text"
-            name="login"
+            name="email"
             placeholder="Почта"
             onChange={handleInputChange}
           />
           <input
             className={classNames(styles.modalInput, styles.passwardFirst)}
-            type="password"
+            type="text"
             name="password"
             placeholder="Пароль"
             onChange={handleInputChange}
           />
           <input
             className={classNames(styles.modalInput, styles.passwardDouble)}
-            type="password"
-            name="password"
-            placeholder="Повторите пароль"
+            type="text"
+            name="username"
+            placeholder="Введите имя пользователя"
             onChange={handleInputChange}
           />
           <button onClick={handleSignup} className={styles.modalBtnSignupEnt}>

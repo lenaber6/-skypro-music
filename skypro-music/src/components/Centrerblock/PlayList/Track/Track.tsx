@@ -21,7 +21,7 @@ export default function Track({
   tracksData,
   isFavourite,
 }: TrackType) {
-  console.log(trackData);
+  // console.log(trackData);
   // const {currentTrack, isPlaying} = useAppSelector((state) => state.playlist);
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
@@ -40,10 +40,11 @@ export default function Track({
   const [isLiked, setIsLiked] = useState(isLikedByUser);
 
   useEffect(() => {
-    const isLikedByUser =
-      isFavourite || !!trackData.stared_user.find((arg) => arg.id === user?.id);
+    if (user) {
+      const isLikedByUser =
+      isFavourite || !!trackData.stared_user.find((arg) => arg.id === user.id);
     setIsLiked(isLikedByUser);
-  }, [isFavourite, trackData, user?.id]);
+    }}, [isFavourite, trackData, user]);
 
   const handleTrackClick = () => {
     dispatch(setCurrentTrack({ trackData, tracksData, isPlaying: true }));

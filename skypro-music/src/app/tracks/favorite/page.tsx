@@ -1,6 +1,6 @@
 "use client";
 import { getFavouriteTracks } from "@/api/tracks";
-import styles from "../layout.module.css";
+import styles from "../page.module.css";
 import { useUser } from "@/hooks/useUser";
 import { useEffect, useState } from "react";
 import { trackType } from "@/types";
@@ -8,6 +8,9 @@ import { useRouter } from "next/navigation";
 import { updateToken } from "@/api/users";
 import PlayList from "@/components/Centrerblock/PlayList/PlayList";
 
+type FavouritePageType = {
+
+}
 export default function FavouritePage() {
   const { token, user } = useUser();
   const [tracksData, setTracksData] = useState<trackType[]>([]);
@@ -35,7 +38,9 @@ export default function FavouritePage() {
   return (
     <>
       <h2 className={styles.centerblockH2}>Мои треки</h2>
-      <PlayList tracks={tracksData} playlist={tracksData} isFavourite={true} />
+      <PlayList tracks={tracksData}
+      //  playlist={tracksData} 
+       isFavourite={true} />
     </>
   );
 }
