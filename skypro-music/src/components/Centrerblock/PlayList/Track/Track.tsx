@@ -35,7 +35,7 @@ export default function Track({
   const { user, token } = useUser();
 
   const isLikedByUser =
-    isFavourite || !!trackData.stared_user.find((arg) => arg.id === user?.id);
+    isFavourite || !!trackData.stared_user?.find((arg) => arg.id === user?.id);
 
   const [isLiked, setIsLiked] = useState(isLikedByUser);
 
