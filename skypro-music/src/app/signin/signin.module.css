@@ -169,6 +169,12 @@ body {
   margin-top: 60px;
   margin-bottom: 20px;
   border: none;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.05px;
+  color: #ffffff;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -180,7 +186,7 @@ body {
   justify-content: center;
 }
 
-.modalBtnEnter a {
+/* .modalBtnEnter a {
   width: 100%;
   height: 100%;
   font-style: normal;
@@ -198,7 +204,7 @@ body {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-}
+} */
 
 .modalBtnSignup {
   width: 278px;

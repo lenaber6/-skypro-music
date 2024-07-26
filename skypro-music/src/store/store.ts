@@ -1,7 +1,8 @@
-// В этом файле будет сконфигурировано хранилище Redux с authSlice.
+// В этом файле будет сконфигурировано хранилище Redux со слайсами.
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { playlistReducer } from "./features/playlistSlice";
+import { userReducer } from "./features/userSlice";
 
 // Функция makeStore создает и возвращает хранилище Redux с помощью функции configureStore.
 export const makeStore = () => {
@@ -9,6 +10,7 @@ export const makeStore = () => {
     // Мы передаем объект настроек, в котором свойство reducer содержит корневой редюсер, объединяющий все редюсеры нашего приложения.
     reducer: combineReducers({
       playlist: playlistReducer, // мы добавляем authReducer под ключом auth в глобальное состояние.
+      user: userReducer,
     }),
   });
 };
