@@ -55,11 +55,29 @@ export async function getTracks() {
 
   //Функция получения лайков
 
-  export async function getFavouriteTracks(token: string) {
+  // export async function getFavouriteTracks(token: string) {
+  //   const res = await fetch(apiUrlFavoriteTracks, {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
+  
+  //   if (!res.ok) {
+  //     throw new Error(JSON.stringify(res.status));
+  //   }
+  
+  //   const data = await res.json();
+  //   return data;
+  // };
+
+  //Функция получения лайков
+
+  export async function fetchFavouriteTracks(access: string) {
     const res = await fetch(apiUrlFavoriteTracks, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${access}`,
       },
     });
   

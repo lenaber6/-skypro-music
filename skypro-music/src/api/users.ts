@@ -36,56 +36,56 @@ export async function signupUser({
   return response.json();
 }
 
-//Функция входа пользователя
-export async function loginUser({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) {
-  const response = await fetch(loginUrl, {
-    method: "POST",
-    body: JSON.stringify({
-      email: email,
-      password: password,
-    }),
-    headers: {
-      "content-type": "application/json",
-    },
-  });
-  if (!response.ok) {
-    throw new Error("Неправильный логин или пароль");
-  }
+// //Функция входа пользователя
+// export async function loginUser({
+//   email,
+//   password,
+// }: {
+//   email: string;
+//   password: string;
+// }) {
+//   const response = await fetch(loginUrl, {
+//     method: "POST",
+//     body: JSON.stringify({
+//       email: email,
+//       password: password,
+//     }),
+//     headers: {
+//       "content-type": "application/json",
+//     },
+//   });
+//   if (!response.ok) {
+//     throw new Error("Неправильный логин или пароль");
+//   }
 
-  return response.json();
-}
+//   return response.json();
+// }
 
-  // Функция получения токена
+//   // Функция получения токена
 
-export async function getToken({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) {
-    const res = await fetch(tokenUrl, {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    if (!res.ok) {
-      throw new Error("Ошибка при получении данных");
-    }
+// export async function getToken({
+//     email,
+//     password,
+//   }: {
+//     email: string;
+//     password: string;
+//   }) {
+//     const res = await fetch(tokenUrl, {
+//       method: "POST",
+//       body: JSON.stringify({
+//         email,
+//         password,
+//       }),
+//       headers: {
+//         "content-type": "application/json",
+//       },
+//     });
+//     if (!res.ok) {
+//       throw new Error("Ошибка при получении данных");
+//     }
   
-    return res.json();
-  };
+//     return res.json();
+//   };
 
   // Функция обновления токена
 

@@ -2,8 +2,17 @@
 // В этом файле мы будем использовать функционал, предоставляемый Redux Toolkit, чтобы создать срез состояния.
 // CreatSlice - встроенная функция, которая помогает создать слайс.
 // PayloadAction - некий встроенный тип, который обозначает action
+import { fetchFavouriteTracks } from "@/api/tracks";
 import { trackType } from "@/types";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export const getFavouriteTracks = createAsyncThunk(
+  "playlist/getFavouriteTracks",
+  async(access: string) => {
+    const favouriteTracks = await fetchFavouriteTracks(access);
+    return favouriteTracks;
+  }
+)
 
 type PlaylistStateType =  { // Тип среза состояния
   currentTrack: null | trackType;       // Сохраним в состояние текущий трек в виде объекта
@@ -19,6 +28,7 @@ type PlaylistStateType =  { // Тип среза состояния
   },
   filteredTracks: trackType[],
   initialTracks: trackType[],
+  likedTracks: trackType[],
 }
 
 const initialState: PlaylistStateType = { // мы определяем начальное состояние initialState
@@ -35,6 +45,7 @@ const initialState: PlaylistStateType = { // мы определяем нача�
   },
   filteredTracks: [],
   initialTracks: [],
+  likedTracks: [],
 };
 
 const playlistSlice = createSlice({ // С помощью функции createSlice мы создаем срез состояния (плэйлиста) с именем auth,
@@ -130,7 +141,23 @@ if (state.filterOptions.order === "Сначала новые") {
   );
 } else state.filteredTracks;
     },
+    setLikedTracks: (state, action: PayloadAction<trackType>) => {
+      state.likedTracks.push(action.payload)
+    },
+    setDisLikedTracks: (state, action: PayloadAction<trackType>) => {
+      state.likedTracks = state.likedTracks.filter((el) => el.id !== action.payload.id);
+    },
   },
+  extraReducers(builder) {
+    builder.addCase(getFavouriteTracks.fulfilled, (
+      state, action: PayloadAction<trackType[]>
+    ) => {
+      state.likedTracks = action.payload;
+    })
+    .addCase(getFavouriteTracks.rejected, (state, action) => {
+      console.error('Error:', action.error.message); // Выводим сообщение об ошибке в консоль
+    })
+  }
 });
 // Вариант на будущее))
 // function changeTrack(direction: number) {
@@ -149,5 +176,5 @@ if (state.filterOptions.order === "Сначала новые") {
 //     state.isPlaying = true;
 //   };
 // }
-export const { setInitialTracks, setCurrentTrack, setIsPlaying, setNextTrack, setPrevTrack, setIsShuffle, setFilters } = playlistSlice.actions;
+export const { setInitialTracks, setCurrentTrack, setIsPlaying, setNextTrack, setPrevTrack, setIsShuffle, setFilters, setLikedTracks, setDisLikedTracks } = playlistSlice.actions;
 export const playlistReducer = playlistSlice.reducer;

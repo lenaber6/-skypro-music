@@ -17,6 +17,8 @@ import { setInitialTracks } from "@/store/features/playlistSlice";
     (state) => state.playlist.filteredTracks
   );
 console.log(filteredTracks);
+
+
   useEffect(() => {
     dispatch(setInitialTracks({ initialTracks: tracks }));
     setIsLoading(false);
