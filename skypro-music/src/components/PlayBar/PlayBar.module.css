@@ -260,6 +260,9 @@
     line-height: 24px;
     color: #ffffff;
   }
+  .activeLike {
+    fill: #b672ff;
+  }
   
   .trackPlayLikeDislike {
     display: -webkit-box;
