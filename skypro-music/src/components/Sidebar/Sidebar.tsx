@@ -5,15 +5,36 @@ import classNames from "classnames";
 import styles from "./Sidebar.module.css";
 import Link from "next/link";
 import { useUser } from "@/hooks/useUser";
+import { useAppDispatch } from "@/hooks";
+import { getTokens, getUser } from "@/store/features/userSlice";
+import { useState } from "react";
 
 export default function Sidebar() {
   const {user, logout} = useUser();
 
+// const [hasAuth, setHasAuth] = useState({ email, password });
+// const dispatch = useAppDispatch();
+
+//   let user = async () => {
+//     try {
+//       await Promise.all([
+//         dispatch(getTokens(hasAuth)).unwrap(),
+//         dispatch(getUser(hasAuth)).unwrap(),
+//       ]);
+//       setHasAuth();
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+
     return(
         <div className={classNames(styles.mainSidebar, styles.sidebar)}>
         <div className={styles.sidebarPersonal}>
+          {/* <p className={styles.sidebarPersonalName}>{user?.username}</p> */}
           <p className={styles.sidebarPersonalName}>{user?.username}</p>
-          <div onClick={logout} className={styles.sidebarIcon}>
+          <div 
+          // onClick={() => dispatch(logout())}
+          onClick={logout} className={styles.sidebarIcon}>
             <svg>
               <use xlinkHref="/img/icon/sprite.svg#logout" />
             </svg>

@@ -53,7 +53,7 @@ export async function getTracks() {
     return res.json();
   };
 
-  //Функция получения лайков
+  //Функция получения лайков (старая)
 
   // export async function getFavouriteTracks(token: string) {
   //   const res = await fetch(apiUrlFavoriteTracks, {
@@ -71,7 +71,7 @@ export async function getTracks() {
   //   return data;
   // };
 
-  //Функция получения лайков
+  //Функция получения лайков (новая)
 
   export async function fetchFavouriteTracks(access: string) {
     const res = await fetch(apiUrlFavoriteTracks, {

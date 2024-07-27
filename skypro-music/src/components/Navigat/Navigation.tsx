@@ -6,11 +6,13 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useState } from "react";
 import { useUser } from "@/hooks/useUser";
+import { useAppDispatch } from "@/hooks";
+import { logout } from "@/store/features/userSlice";
 
 export default function Navigation() {
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const {user} = useUser();
-
+  const dispatch = useAppDispatch();
   return (
     <nav className={classNames(styles.mainNav, styles.nav)}>
       <Link href={"/"}>
@@ -45,10 +47,16 @@ export default function Navigation() {
                 Мой плейлист
               </Link>
             </li>
-            {!user?.email && (
+            {!user?.email ? (
               <li className={styles.menuItem}>
               <Link href="/signin" className={styles.menuLink}>
                 Войти
+              </Link>
+            </li>
+            ) : (
+              <li className={styles.menuItem}>
+              <Link onClick={() => dispatch(logout())} href="/" className={styles.menuLink}>
+                Выйти
               </Link>
             </li>
             )}

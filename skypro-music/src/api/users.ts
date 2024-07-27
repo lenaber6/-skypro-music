@@ -63,29 +63,29 @@ export async function signupUser({
 
 //   // Функция получения токена
 
-// export async function getToken({
-//     email,
-//     password,
-//   }: {
-//     email: string;
-//     password: string;
-//   }) {
-//     const res = await fetch(tokenUrl, {
-//       method: "POST",
-//       body: JSON.stringify({
-//         email,
-//         password,
-//       }),
-//       headers: {
-//         "content-type": "application/json",
-//       },
-//     });
-//     if (!res.ok) {
-//       throw new Error("Ошибка при получении данных");
-//     }
+export async function getToken({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) {
+    const res = await fetch(tokenUrl, {
+      method: "POST",
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Ошибка при получении данных");
+    }
   
-//     return res.json();
-//   };
+    return res.json();
+  };
 
   // Функция обновления токена
 

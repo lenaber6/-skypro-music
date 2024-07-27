@@ -38,7 +38,7 @@ export default function PlayBar() {
   // useEffect(() => {
   //   setIsLiked(isLikedByUser);
   // }, [currentTrack]);
-  console.log(isLikedByUser);
+  // console.log(isLikedByUser);
 
   
   const handleNextTrackClick = () => {
@@ -290,7 +290,7 @@ useEffect(() => {
                   <div className={classNames(styles.trackPlayLike, styles.btnIcon)}>
                     <svg 
                     onClick={handleLikeTrack}
-                    className={classNames(styles.trackPlayLikeSvg, isLiked ? styles.activeLike : null)}>
+                    className={classNames(styles.trackPlayLikeSvg, !isLiked ? styles.activeLike : null)}>
                       <use xlinkHref="/img/icon/sprite.svg#icon-like" />
                     </svg>
                   </div>

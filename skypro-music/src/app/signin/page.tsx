@@ -54,7 +54,7 @@ async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 
   // const [loginData, setLoginData] = useState({ email: "", password: "" });

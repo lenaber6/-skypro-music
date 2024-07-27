@@ -28,7 +28,7 @@ export default function Track({
   const { name, author, album, duration_in_seconds, id } = trackData;
   const isPlayingIcon = currentTrack?.id === id ? isPlaying : false;
 
-  const isCurrentTrack = currentTrack ? currentTrack.id === id : false;
+  // const isCurrentTrack = currentTrack ? currentTrack.id === id : false;
 
   const dispatch = useAppDispatch();
 

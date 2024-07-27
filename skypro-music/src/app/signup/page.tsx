@@ -9,6 +9,7 @@ import { useUser } from "@/hooks/useUser";
 import { signupUser } from "@/api/users";
 
 export default function SignupPage() {
+  
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
