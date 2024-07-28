@@ -10,9 +10,14 @@ import { setInitialTracks, setIsPlaying, setIsShuffle, setNextTrack, setPrevTrac
 import { useUser } from "@/hooks/useUser";
 import { deleteFavouriteTracks, getTracks, postFavouriteTracks } from "@/api/tracks";
 import { updateToken } from "@/api/users";
+import { useTrackLikes } from "@/hooks/likes";
+import { trackType } from "@/types";
+import { useInitializeLikedTracks } from "@/hooks/initilize";
 
-// export default function PlayBar(playlist: trackType[]) {
-export default function PlayBar() {
+type PlayBarType = {
+  trackData: trackType;
+};
+export default function PlayBar({trackData}: PlayBarType) {
 
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
   const audioRef = useRef<null | HTMLAudioElement>(null);
@@ -24,21 +29,86 @@ export default function PlayBar() {
   const [isLooping, setIsLooping] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5); // Начальная громкость установлена на 50%
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
-  const {user, token} = useUser();
+  // const {user, token} = useUser();
 
   const duration = audioRef.current?.duration || 0;
 
   const dispatch = useAppDispatch();
-  const [isLiked, setIsLiked] = useState<boolean>(false);
+  useInitializeLikedTracks();
+  const { isLiked, handleLike } = useTrackLikes(trackData);
+  console.log(trackData, "trackData");
 
-  const isLikedByUser =
-    isLiked || !!currentTrack?.stared_user.find((arg) => arg.id === user?.id);
+
+  // const [isLiked, setIsLiked] = useState<boolean>(false);
+
+  // const isLikedByUser =
+  //   isLiked || !!currentTrack?.stared_user.find((arg) => arg.id === user?.id);
 
 
   // useEffect(() => {
   //   setIsLiked(isLikedByUser);
   // }, [currentTrack]);
-  // console.log(isLikedByUser);
+
+  // const handleLikeTrack = () => {
+  //   setIsLiked(!isLiked);
+  //   if (user?.email) {
+  //     if (!isLiked) {
+  //       postFavouriteTracks(currentTrack?.id!, token?.access!)
+  //         .then((data) => {
+  //           if (data.detail === "An error has occurred") {
+  //             throw new Error("Лайк уже поставлен");
+  //           }
+  //           getTracks().then((tracksData) => {
+  //             dispatch(setInitialTracks({ initialTracks: tracksData }));
+  //           });
+  //           setIsLiked(!isLiked);
+  //         })
+  //         .catch((error) => {
+  //           if (error.message === "401" && user) {
+  //             updateToken(token?.refresh!).then((data) => {
+  //               postFavouriteTracks(currentTrack?.id!, data.access).then(
+  //                 (data) => {
+  //                   if (data.detail === "An error has occurred") {
+  //                     throw new Error("Лайк уже поставлен");
+  //                   }
+  //                 }
+  //               );
+  //             });
+  //           } else {
+  //             console.log(error);
+  //           }
+  //         });
+  //     } else {
+  //       deleteFavouriteTracks(currentTrack?.id!, token?.access!)
+  //         .then((data) => {
+  //           if (data.detail === "An error has occurred") {
+  //             throw new Error("Лайк уже убран");
+  //           }
+  //           getTracks().then((tracksData) => {
+  //             dispatch(setInitialTracks({ initialTracks: tracksData }));
+  //           });
+  //           setIsLiked(!isLiked);
+  //         })
+  //         .catch((error) => {
+  //           if (error.message === "401" && user) {
+  //             updateToken(token?.refresh!).then((data) => {
+  //               deleteFavouriteTracks(currentTrack?.id!, data.access).then(
+  //                 (data) => {
+  //                   if (data.detail === "An error has occurred") {
+  //                     throw new Error("Лайк уже поставлен");
+  //                   }
+  //                 }
+  //               );
+  //             });
+  //           } else {
+  //             console.log(error);
+  //           }
+  //         });
+  //     }
+  //   } else {
+  //     alert("Для добавления трека, пожалуйста авторизуйтесь");
+  //   }
+  // };
 
   
   const handleNextTrackClick = () => {
@@ -128,66 +198,6 @@ useEffect(() => {
     }
   };
 
-  const handleLikeTrack = () => {
-    setIsLiked(!isLiked);
-    if (user?.email) {
-      if (!isLiked) {
-        postFavouriteTracks(currentTrack?.id!, token?.access!)
-          .then((data) => {
-            if (data.detail === "An error has occurred") {
-              throw new Error("Лайк уже поставлен");
-            }
-            getTracks().then((tracksData) => {
-              dispatch(setInitialTracks({ initialTracks: tracksData }));
-            });
-            setIsLiked(!isLiked);
-          })
-          .catch((error) => {
-            if (error.message === "401" && user) {
-              updateToken(token?.refresh!).then((data) => {
-                postFavouriteTracks(currentTrack?.id!, data.access).then(
-                  (data) => {
-                    if (data.detail === "An error has occurred") {
-                      throw new Error("Лайк уже поставлен");
-                    }
-                  }
-                );
-              });
-            } else {
-              console.log(error);
-            }
-          });
-      } else {
-        deleteFavouriteTracks(currentTrack?.id!, token?.access!)
-          .then((data) => {
-            if (data.detail === "An error has occurred") {
-              throw new Error("Лайк уже убран");
-            }
-            getTracks().then((tracksData) => {
-              dispatch(setInitialTracks({ initialTracks: tracksData }));
-            });
-            setIsLiked(!isLiked);
-          })
-          .catch((error) => {
-            if (error.message === "401" && user) {
-              updateToken(token?.refresh!).then((data) => {
-                deleteFavouriteTracks(currentTrack?.id!, data.access).then(
-                  (data) => {
-                    if (data.detail === "An error has occurred") {
-                      throw new Error("Лайк уже поставлен");
-                    }
-                  }
-                );
-              });
-            } else {
-              console.log(error);
-            }
-          });
-      }
-    } else {
-      alert("Для добавления трека, пожалуйста авторизуйтесь");
-    }
-  };
 
   return (
     <>
@@ -277,7 +287,6 @@ useEffect(() => {
                   <div  className={styles.trackPlayAuthor}>
                     <span className={styles.trackPlayAuthorLink}>
                      {currentTrack.name}
-                     {/* {playlist[currentTrackIndex].name} */}
                     </span>
                   </div>
                   <div  className={styles.trackPlayAlbum}>
@@ -287,20 +296,23 @@ useEffect(() => {
                   </div>
                 </div>
                 <div className={styles.trackPlayLikeDislike}>
-                  <div className={classNames(styles.trackPlayLike, styles.btnIcon)}>
+                  <div  onClick={handleLike} className={classNames(styles.trackPlayLike, styles.btnIcon)}>
                     <svg 
-                    onClick={handleLikeTrack}
-                    className={classNames(styles.trackPlayLikeSvg, !isLiked ? styles.activeLike : null)}>
-                      <use xlinkHref="/img/icon/sprite.svg#icon-like" />
+                    className={classNames(styles.trackPlayLikeSvg, 
+                    // !isLiked ? styles.activeLike : null
+                    )}>
+                      <use xlinkHref={`/img/icon/sprite.svg#${
+                        isLiked ? 
+                        "icon-like-active" : "icon-like"}`} />
                     </svg>
                   </div>
-                  <div className={classNames(styles.trackPlayDislike, styles.btnIcon)}>
+                  {/* <div className={classNames(styles.trackPlayDislike, styles.btnIcon)}>
                     <svg 
                     onClick={handleLikeTrack}
                     className={classNames(styles.trackPlayDislikeSvg, isLiked ? styles.activeLike : null)}>
                       <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
                     </svg>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               </div>

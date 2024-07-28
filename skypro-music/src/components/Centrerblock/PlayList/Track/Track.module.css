@@ -8,13 +8,13 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    gap: 5px;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     -ms-flex-direction: row;
     flex-direction: row;
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
-    justify-content: space-between;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -113,9 +113,9 @@
 
   } */
   .trackTimeSvg {
-    width: 14px;
-    height: 12px;
-    margin-right: 17px;
+    width: 34px;
+    height: 15px;
+    /* margin-right: 17px; */
     fill: transparent;
     stroke: #696969;
   }

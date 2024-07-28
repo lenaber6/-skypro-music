@@ -2,14 +2,14 @@
 // В этом файле мы будем использовать функционал, предоставляемый Redux Toolkit, чтобы создать срез состояния.
 // CreatSlice - встроенная функция, которая помогает создать слайс.
 // PayloadAction - некий встроенный тип, который обозначает action
-import { fetchFavouriteTracks } from "@/api/tracks";
+import { fetchFavouriteTracks } from "@/api/user";
 import { trackType } from "@/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const getFavouriteTracks = createAsyncThunk(
   "playlist/getFavouriteTracks",
-  async(access: string) => {
-    const favouriteTracks = await fetchFavouriteTracks(access);
+  async(tokens: {access:string, refresh:string}) => {
+    const favouriteTracks = await fetchFavouriteTracks(tokens);
     return favouriteTracks;
   }
 )

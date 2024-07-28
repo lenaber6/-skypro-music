@@ -268,6 +268,7 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    padding-left: 30px;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     -ms-flex-direction: row;
@@ -275,7 +276,6 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    margin-left: 26%;
   }
   
   .trackPlayLike,
@@ -284,8 +284,8 @@
   }
   
   .trackPlayLikeSvg {
-    width: 14px;
-    height: 12px;
+    width: 34px;
+    height: 22px;
     /* fill: transparent; */
     stroke: #696969;
   }

@@ -17,6 +17,7 @@ export default function Error({ error, reset }: ErrorType) {
        <h2 className={styles.scaryText}>Что-то пошло не так!</h2>
       <Image 
        className={styles.sidebarImg}
+       priority
        src="/img/joker zombie face.png"
        alt="scary face"
        width={250}

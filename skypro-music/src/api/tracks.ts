@@ -1,3 +1,4 @@
+import { fetchWithAuth } from "@/helpers/fetchWithAuth";
 import { trackType } from "@/types";
 
 const apiUrl = 'https://skypro-music-api.skyeng.tech/catalog/track/all/';
@@ -71,24 +72,7 @@ export async function getTracks() {
   //   return data;
   // };
 
-  //Функция получения лайков (новая)
-
-  export async function fetchFavouriteTracks(access: string) {
-    const res = await fetch(apiUrlFavoriteTracks, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${access}`,
-      },
-    });
   
-    if (!res.ok) {
-      throw new Error(JSON.stringify(res.status));
-    }
-  
-    const data = await res.json();
-    return data;
-  };
-
   //Функция удаления лайков
   
   export async function deleteFavouriteTracks(id: number, token: string) {

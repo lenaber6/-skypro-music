@@ -1,17 +1,47 @@
+import { disLikeTrack, likeTrack } from "@/api/user";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { getFavouriteTracks } from "@/store/features/playlistSlice";
-import { useEffect } from "react";
+import {
+  setDisLikedTracks,
+  setLikedTracks,
+} from "@/store/features/playlistSlice";
+import { trackType } from "@/types";
 
-// Хук для инициализации лайкнутых треков, с пом. кот. мы "бегаем" в state и 
-// и спрашиваем: есть токены? - есть!-делаем запрос на данные
-// Хук, который вызывает получение избранных треков
-// Эта ф-я запросит избранные треки и сохранит их в state
-export function useInitializeLikedTracks() {
-    const dispatch = useAppDispatch();
-    const tokens = useAppSelector((state) => state.user.tokens);
-    useEffect(() => {
-        if(tokens.access) {
-            dispatch(getFavouriteTracks(tokens.access))
-        }
-    }, [tokens, dispatch])
-}  
+// хук для постановки и снятия лайка
+
+export function useTrackLikes(trackData: trackType) {
+  const dispatch = useAppDispatch();
+  const tokens = useAppSelector((state) => state.user.tokens);
+  const likedTracks = useAppSelector((state) => state.playlist.likedTracks);
+  const trackId = trackData.id;
+//   console.log(trackData);
+// if (trackId === undefined) {return};
+const isLiked = !!likedTracks.find((track) => track.id === trackId);
+
+  const handleLike = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    if (!tokens.access || !tokens.refresh)
+      return alert("Вы не авторизованы! Пожалуйста, авторизуйтесь!");
+    // Только ссылки на действия
+    const action = isLiked ? disLikeTrack : likeTrack;
+    try {
+      await action({
+        trackId,
+        access: tokens.access,
+        refresh: tokens.refresh,
+      });
+      console.log(trackId);
+      if (isLiked) {
+        dispatch(setDisLikedTracks(trackData));
+        // console.log(trackData);
+      } else {
+        dispatch(setLikedTracks(trackData));
+      }
+      // console.log(trackData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  return { handleLike, isLiked };
+}
+// !! - перед массивом - преобразование в булев тип

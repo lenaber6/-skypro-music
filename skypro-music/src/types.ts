@@ -19,6 +19,7 @@ export type trackType = {
   stared_user: userType[];
   isFavourite: boolean;
   isLiked: boolean;
+  trackId: number;
 };
 export type ErrorType = {
   error: Error;

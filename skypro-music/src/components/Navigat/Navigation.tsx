@@ -6,12 +6,14 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useState } from "react";
 import { useUser } from "@/hooks/useUser";
-import { useAppDispatch } from "@/hooks";
-import { logout } from "@/store/features/userSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { getUser, logout } from "@/store/features/userSlice";
 
 export default function Navigation() {
   const [isOpened, setIsOpened] = useState<boolean>(false);
-  const {user} = useUser();
+  // const {user} = useUser();
+  const user = useAppSelector((state) => state.user.user);
+  
   const dispatch = useAppDispatch();
   return (
     <nav className={classNames(styles.mainNav, styles.nav)}>
@@ -54,8 +56,8 @@ export default function Navigation() {
               </Link>
             </li>
             ) : (
-              <li className={styles.menuItem}>
-              <Link onClick={() => dispatch(logout())} href="/" className={styles.menuLink}>
+              <li onClick={() => dispatch(logout())} className={styles.menuItem}>
+              <Link  href="/" className={styles.menuLink}>
                 Выйти
               </Link>
             </li>
