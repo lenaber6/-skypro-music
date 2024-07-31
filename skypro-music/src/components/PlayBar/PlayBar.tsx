@@ -13,6 +13,7 @@ import { updateToken } from "@/api/users";
 import { useTrackLikes } from "@/hooks/likes";
 import { trackType } from "@/types";
 import { useInitializeLikedTracks } from "@/hooks/initilize";
+import { current } from "@reduxjs/toolkit";
 
 type PlayBarType = {
   trackData: trackType;
@@ -34,9 +35,9 @@ export default function PlayBar({trackData}: PlayBarType) {
   const duration = audioRef.current?.duration || 0;
 
   const dispatch = useAppDispatch();
-  useInitializeLikedTracks();
+  // useInitializeLikedTracks();
   const { isLiked, handleLike } = useTrackLikes(trackData);
-  console.log(trackData, "trackData");
+  // console.log(trackData, "trackData");
 
 
   // const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -295,8 +296,8 @@ useEffect(() => {
                     </span>
                   </div>
                 </div>
-                <div className={styles.trackPlayLikeDislike}>
-                  <div  onClick={handleLike} className={classNames(styles.trackPlayLike, styles.btnIcon)}>
+                <div className={classNames(styles.trackPlayLike, styles.btnIcon, styles.trackPlayLikeDislike)}>
+                  <div  onClick={handleLike} >
                     <svg 
                     className={classNames(styles.trackPlayLikeSvg, 
                     // !isLiked ? styles.activeLike : null

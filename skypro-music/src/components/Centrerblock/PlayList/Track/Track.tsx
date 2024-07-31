@@ -162,13 +162,13 @@ export default function Track({ trackData, tracksData }: TrackType) {
       <div className={styles.trackAlbum}>
         <span className={styles.trackAlbumLink}>{album}</span>
       </div>
-      <div onClick={handleLike} className={styles.trackTime}>
+      <div onClick={handleLike} >
           <svg className={styles.trackTimeSvg}>
             <use
-              className={classNames(
-                styles.likeButton,
-                // isLiked && styles.activeLike
-              )}
+              // className={classNames(
+              //   styles.likeButton,
+              //   // isLiked && styles.activeLike
+              // )}
               xlinkHref={`/img/icon/sprite.svg#${isLiked ? "icon-like-active" : "icon-like"}`}
             />
           </svg>

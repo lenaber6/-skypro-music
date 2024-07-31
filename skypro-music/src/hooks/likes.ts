@@ -12,7 +12,7 @@ export function useTrackLikes(trackData: trackType) {
   const dispatch = useAppDispatch();
   const tokens = useAppSelector((state) => state.user.tokens);
   const likedTracks = useAppSelector((state) => state.playlist.likedTracks);
-  const trackId = trackData.id;
+  const trackId = trackData?.id;
 //   console.log(trackData);
 // if (trackId === undefined) {return};
 const isLiked = !!likedTracks.find((track) => track.id === trackId);

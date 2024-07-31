@@ -285,12 +285,12 @@
   
   .trackPlayLikeSvg {
     width: 34px;
-    height: 22px;
-    /* fill: transparent; */
+    height: 15px;
+    fill: transparent;
     stroke: #696969;
   }
   
-  .trackPlayDislike {
+  /* .trackPlayDislike {
     margin-left: 28.5px;
   }
   
@@ -298,8 +298,8 @@
     width: 14.34px;
     height: 13px;
     /* fill: transparent; */
-    stroke: #696969;
-  }
+    /* stroke: #696969; */
+   
   /* .btnIcon:hover svg {
     fill: transparent;
     stroke: #acacac;
