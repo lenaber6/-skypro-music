@@ -23,7 +23,22 @@ export default function TrackLayout({
           </div>
           <Sidebar />
         </main>
-        <PlayBar />
+        <PlayBar trackData={{
+          track: "",
+          id: 0,
+          name: "",
+          author: "",
+          release_date: "",
+          genre: "",
+          duration_in_seconds: 0,
+          album: "",
+          logo: null,
+          track_file: "",
+          stared_user: [],
+          isFavourite: false,
+          isLiked: false,
+          trackId: 0
+        }} />
         <footer className={styles.footer} />
       </div>
     </div>

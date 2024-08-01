@@ -36,9 +36,7 @@ export default function PlayBar({trackData}: PlayBarType) {
 
   const dispatch = useAppDispatch();
   // useInitializeLikedTracks();
-  const { isLiked, handleLike } = useTrackLikes(trackData);
-  // console.log(trackData, "trackData");
-
+    const { isLiked, handleLike } = useTrackLikes(currentTrack!);
 
   // const [isLiked, setIsLiked] = useState<boolean>(false);
 
@@ -171,11 +169,12 @@ useEffect(() => {
 }, [isPlaying, currentTrack]);
 
   useEffect(() => {
-    const ref = audioRef.current;
-    ref?.addEventListener("timeupdate", () =>
-      setCurrentTime(audioRef.current!.currentTime)
-    );
- 
+    if (audioRef.current) {
+      const ref = audioRef.current;
+      ref?.addEventListener("timeupdate", () =>
+        setCurrentTime(audioRef.current!.currentTime)
+      );
+    }
   }, [currentTrack]);
 
   useEffect(() => {
