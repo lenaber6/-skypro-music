@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { updateToken } from "@/api/users";
 import classNames from "classnames";
 import { useTrackLikes } from "@/hooks/likes";
+import { formatDuration } from "@/utils";
 
 type TrackType = {
   trackData: trackType;
@@ -24,19 +25,7 @@ export default function Track({ trackData, tracksData }: TrackType) {
 
   const dispatch = useAppDispatch();
   const { isLiked, handleLike } = useTrackLikes(trackData);
-  // const { user, token } = useUser();
-
-  // const isLikedByUser =
-  //   isFavourite || !!trackData.stared_user?.find((arg) => arg.id === user?.id);
-
-  // const [isLiked, setIsLiked] = useState(isLikedByUser);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     const isLikedByUser =
-  //     isFavourite || !!trackData.stared_user.find((arg) => arg.id === user.id);
-  //   setIsLiked(isLikedByUser);
-  //   }}, [isFavourite, trackData, user]);
+  const user = useAppSelector((state) => state.user.user);
 
   const handleTrackClick = () => {
     dispatch(setCurrentTrack({ trackData, tracksData, isPlaying: true }));
@@ -162,18 +151,25 @@ export default function Track({ trackData, tracksData }: TrackType) {
       <div className={styles.trackAlbum}>
         <span className={styles.trackAlbumLink}>{album}</span>
       </div>
-      <div onClick={handleLike} >
+      {user?.email ? (
+       <div onClick={handleLike} >
+       <svg className={styles.trackTimeSvg}>
+         <use
+           xlinkHref={`/img/icon/sprite.svg#${isLiked ? "icon-like-active" : "icon-like"}`}
+         />
+       </svg>
+     <span className={styles.trackTimeText}>{formatDuration(duration_in_seconds)}</span>
+   </div> 
+      ) : (
+        <div onClick={handleLike} className={styles.btnIcon}>
           <svg className={styles.trackTimeSvg}>
             <use
-              // className={classNames(
-              //   styles.likeButton,
-              //   // isLiked && styles.activeLike
-              // )}
-              xlinkHref={`/img/icon/sprite.svg#${isLiked ? "icon-like-active" : "icon-like"}`}
+              xlinkHref="img/icon/sprite.svg#icon-like"
             />
           </svg>
-        <span className={styles.trackTimeText}>{duration_in_seconds}</span>
+        <span className={styles.trackTimeText}>{formatDuration(duration_in_seconds)}</span>
       </div>
+      )}
     </div>
   );
 }

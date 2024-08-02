@@ -10,10 +10,8 @@
     -ms-flex-align: center;
     align-items: center;
     margin-bottom: 51px;
+    gap: 10px;
   }
-  /* .filter {
-
-  } */
   .filterTitle {
     font-style: normal;
     font-weight: 400;

@@ -30,7 +30,8 @@ export default function PlayBar({trackData}: PlayBarType) {
   const [isLooping, setIsLooping] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5); // Начальная громкость установлена на 50%
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
-  // const {user, token} = useUser();
+  const user = useAppSelector((state) => state.user.user);
+
 
   const duration = audioRef.current?.duration || 0;
 
@@ -296,16 +297,23 @@ useEffect(() => {
                   </div>
                 </div>
                 <div className={classNames(styles.trackPlayLike, styles.btnIcon, styles.trackPlayLikeDislike)}>
-                  <div  onClick={handleLike} >
-                    <svg 
-                    className={classNames(styles.trackPlayLikeSvg, 
-                    // !isLiked ? styles.activeLike : null
-                    )}>
-                      <use xlinkHref={`/img/icon/sprite.svg#${
-                        isLiked ? 
-                        "icon-like-active" : "icon-like"}`} />
-                    </svg>
-                  </div>
+                {user?.email ? (
+       <div onClick={handleLike} >
+       <svg className={styles.trackTimeSvg}>
+         <use
+           xlinkHref={`/img/icon/sprite.svg#${isLiked ? "icon-like-active" : "icon-like"}`}
+         />
+       </svg>
+   </div> 
+      ) : (
+        <div onClick={handleLike}>
+          <svg className={styles.trackTimeSvg}>
+            <use
+              xlinkHref="img/icon/sprite.svg#icon-like"
+            />
+          </svg>
+      </div>
+      )}
                   {/* <div className={classNames(styles.trackPlayDislike, styles.btnIcon)}>
                     <svg 
                     onClick={handleLikeTrack}

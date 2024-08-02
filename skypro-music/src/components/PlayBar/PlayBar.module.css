@@ -145,7 +145,13 @@
     -ms-flex-align: center;
     align-items: center;
   }
-  
+  .trackTimeSvg {
+    width: 34px;
+    height: 15px;
+    /* margin-right: 17px; */
+    fill: transparent;
+    stroke: #696969;
+  }
   .playerBtnShuffleSvg {
     width: 20px;
     height: 18px;

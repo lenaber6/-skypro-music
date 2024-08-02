@@ -119,6 +119,12 @@
     fill: transparent;
     stroke: #696969;
   }
+  .btnIcon:active svg {
+    height: 20px;
+    fill: transparent;
+    stroke: #ffffff;
+    cursor: pointer;
+  }
   
   .trackTimeText {
     font-style: normal;

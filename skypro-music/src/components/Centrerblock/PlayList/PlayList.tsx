@@ -59,7 +59,7 @@ console.log(filteredTracks);
                     trackData={trackData}
                     tracksData={tracks}
                     key={trackData.id}
-                    isFavourite={isFavourite} />
+                    />
                 ))}
               </div></>
         )}

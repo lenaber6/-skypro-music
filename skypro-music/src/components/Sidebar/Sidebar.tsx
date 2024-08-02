@@ -15,7 +15,8 @@ export default function Sidebar() {
 
   return (
     <div className={classNames(styles.mainSidebar, styles.sidebar)}>
-      <div className={styles.sidebarPersonal}>
+            {user?.email ? (
+              <div className={styles.sidebarPersonal}>
         <p className={styles.sidebarPersonalName}>{user?.username}</p>
         <div onClick={() => dispatch(logout())} className={styles.sidebarIcon}>
           <svg>
@@ -23,6 +24,8 @@ export default function Sidebar() {
           </svg>
         </div>
       </div>
+            ) : null}
+      
       <div className={styles.sidebarBlock}>
         <div className={styles.sidebarList}>
           <div className={styles.sidebarItem}>
