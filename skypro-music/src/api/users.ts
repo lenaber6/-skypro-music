@@ -1,7 +1,4 @@
-// import { userType } from "@/types";
-
 const signupUrl = "https://skypro-music-api.skyeng.tech/user/signup/";
-const loginUrl = "https://skypro-music-api.skyeng.tech/user/login/";
 const tokenUrl = "https://skypro-music-api.skyeng.tech/user/token/";
 const updateTokenUrl =
   "https://skypro-music-api.skyeng.tech/user/token/refresh/";
@@ -35,32 +32,7 @@ export async function signupUser({
   return response.json();
 }
 
-// //Функция входа пользователя
-// export async function loginUser({
-//   email,
-//   password,
-// }: {
-//   email: string;
-//   password: string;
-// }) {
-//   const response = await fetch(loginUrl, {
-//     method: "POST",
-//     body: JSON.stringify({
-//       email: email,
-//       password: password,
-//     }),
-//     headers: {
-//       "content-type": "application/json",
-//     },
-//   });
-//   if (!response.ok) {
-//     throw new Error("Неправильный логин или пароль");
-//   }
-
-//   return response.json();
-// }
-
-//   // Функция получения токена
+// Функция получения токена
 
 export async function getToken({
     email,
