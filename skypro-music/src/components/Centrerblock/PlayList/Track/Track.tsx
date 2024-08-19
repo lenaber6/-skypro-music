@@ -1,14 +1,9 @@
 "use client";
 
-import { deleteFavouriteTracks, postFavouriteTracks } from "@/api/tracks";
 import styles from "./Track.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { useUser } from "@/hooks/useUser";
 import { setCurrentTrack } from "@/store/features/playlistSlice";
 import { trackType } from "@/types";
-import { useEffect, useState } from "react";
-import { updateToken } from "@/api/users";
-import classNames from "classnames";
 import { useTrackLikes } from "@/hooks/likes";
 import { formatDuration } from "@/utils";
 
@@ -30,97 +25,6 @@ export default function Track({ trackData, tracksData }: TrackType) {
   const handleTrackClick = () => {
     dispatch(setCurrentTrack({ trackData, tracksData, isPlaying: true }));
   };
-
-  // const handleLikeTrack = (e: React.MouseEvent<SVGUseElement>) => {
-  //   e.stopPropagation();
-  //   if (user?.email) {
-  //     if (!isLiked) {
-  //       postFavouriteTracks(trackData.id, token?.access!)
-  //         .then((data) => {
-  //           if (data.detail === "An error has occurred") {
-  //             throw new Error("Лайк уже поставлен");
-  //           }
-  //           setIsLiked((prev) => !prev);
-  //           if (currentTrack) {
-  //             dispatch(
-  //               setCurrentTrack({
-  //                 trackData: { ...currentTrack, isLiked: !isLiked },
-  //                 tracksData,
-  //                 isPlaying: false,
-  //               })
-  //             );
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           if (error.message === "401" && user) {
-  //             updateToken(token?.refresh!).then((data) => {
-  //               postFavouriteTracks(trackData.id, data.access).then((data) => {
-  //                 if (data.detail === "An error has occurred") {
-  //                   throw new Error("Лайк уже поставлен");
-  //                 }
-  //                 setIsLiked((prev) => !prev);
-  //                 if (currentTrack) {
-  //                   dispatch(
-  //                     setCurrentTrack({
-  //                       trackData: { ...currentTrack, isLiked: !isLiked },
-  //                       tracksData,
-  //                       isPlaying: false,
-  //                     })
-  //                   );
-  //                 }
-  //               });
-  //             });
-  //           } else {
-  //             console.log(error);
-  //           }
-  //         });
-  //     } else {
-  //       deleteFavouriteTracks(trackData.id, token?.access!)
-  //         .then((data) => {
-  //           if (data.detail === "An error has occurred") {
-  //             throw new Error("Лайк уже убран");
-  //           }
-  //           setIsLiked((prev) => !prev);
-  //           if (currentTrack) {
-  //             dispatch(
-  //               setCurrentTrack({
-  //                 trackData: { ...currentTrack, isLiked: !isLiked },
-  //                 tracksData,
-  //                 isPlaying: false,
-  //               })
-  //             );
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           if (error.message === "401" && user) {
-  //             updateToken(token?.refresh!).then((data) => {
-  //               deleteFavouriteTracks(trackData.id, data.access).then(
-  //                 (data) => {
-  //                   if (data.detail === "An error has occurred") {
-  //                     throw new Error("Лайк уже убран");
-  //                   }
-  //                   setIsLiked((prev) => !prev);
-  //                   if (currentTrack) {
-  //                     dispatch(
-  //                       setCurrentTrack({
-  //                         trackData: { ...currentTrack, isLiked: !isLiked },
-  //                         tracksData,
-  //                         isPlaying: false,
-  //                       })
-  //                     );
-  //                   }
-  //                 }
-  //               );
-  //             });
-  //           } else {
-  //             console.log(error);
-  //           }
-  //         });
-  //     }
-  //   } else {
-  //     alert("Для добавления трека, пожалуйста, авторизуйтесь");
-  //   }
-  // };
 
   return (
     <div onClick={handleTrackClick} className={styles.playlistTrack}>
@@ -161,7 +65,7 @@ export default function Track({ trackData, tracksData }: TrackType) {
      <span className={styles.trackTimeText}>{formatDuration(duration_in_seconds)}</span>
    </div> 
       ) : (
-        <div onClick={handleLike} className={styles.btnIcon}>
+        <div onClick={handleLike} >
           <svg className={styles.trackTimeSvg}>
             <use
               xlinkHref="img/icon/sprite.svg#icon-like"

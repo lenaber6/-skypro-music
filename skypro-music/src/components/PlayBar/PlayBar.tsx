@@ -36,81 +36,8 @@ export default function PlayBar({trackData}: PlayBarType) {
   const duration = audioRef.current?.duration || 0;
 
   const dispatch = useAppDispatch();
-  // useInitializeLikedTracks();
     const { isLiked, handleLike } = useTrackLikes(currentTrack!);
 
-  // const [isLiked, setIsLiked] = useState<boolean>(false);
-
-  // const isLikedByUser =
-  //   isLiked || !!currentTrack?.stared_user.find((arg) => arg.id === user?.id);
-
-
-  // useEffect(() => {
-  //   setIsLiked(isLikedByUser);
-  // }, [currentTrack]);
-
-  // const handleLikeTrack = () => {
-  //   setIsLiked(!isLiked);
-  //   if (user?.email) {
-  //     if (!isLiked) {
-  //       postFavouriteTracks(currentTrack?.id!, token?.access!)
-  //         .then((data) => {
-  //           if (data.detail === "An error has occurred") {
-  //             throw new Error("Лайк уже поставлен");
-  //           }
-  //           getTracks().then((tracksData) => {
-  //             dispatch(setInitialTracks({ initialTracks: tracksData }));
-  //           });
-  //           setIsLiked(!isLiked);
-  //         })
-  //         .catch((error) => {
-  //           if (error.message === "401" && user) {
-  //             updateToken(token?.refresh!).then((data) => {
-  //               postFavouriteTracks(currentTrack?.id!, data.access).then(
-  //                 (data) => {
-  //                   if (data.detail === "An error has occurred") {
-  //                     throw new Error("Лайк уже поставлен");
-  //                   }
-  //                 }
-  //               );
-  //             });
-  //           } else {
-  //             console.log(error);
-  //           }
-  //         });
-  //     } else {
-  //       deleteFavouriteTracks(currentTrack?.id!, token?.access!)
-  //         .then((data) => {
-  //           if (data.detail === "An error has occurred") {
-  //             throw new Error("Лайк уже убран");
-  //           }
-  //           getTracks().then((tracksData) => {
-  //             dispatch(setInitialTracks({ initialTracks: tracksData }));
-  //           });
-  //           setIsLiked(!isLiked);
-  //         })
-  //         .catch((error) => {
-  //           if (error.message === "401" && user) {
-  //             updateToken(token?.refresh!).then((data) => {
-  //               deleteFavouriteTracks(currentTrack?.id!, data.access).then(
-  //                 (data) => {
-  //                   if (data.detail === "An error has occurred") {
-  //                     throw new Error("Лайк уже поставлен");
-  //                   }
-  //                 }
-  //               );
-  //             });
-  //           } else {
-  //             console.log(error);
-  //           }
-  //         });
-  //     }
-  //   } else {
-  //     alert("Для добавления трека, пожалуйста авторизуйтесь");
-  //   }
-  // };
-
-  
   const handleNextTrackClick = () => {
     dispatch(setNextTrack());
     // dispatch(setIsPlaying(true));
@@ -137,7 +64,6 @@ export default function PlayBar({trackData}: PlayBarType) {
   };
   
   const handleShuffleTrack = () => {
-    console.log(isShuffle);
     if (isShuffle) {
       dispatch(setIsShuffle(false));
     } else {
@@ -314,13 +240,6 @@ useEffect(() => {
           </svg>
       </div>
       )}
-                  {/* <div className={classNames(styles.trackPlayDislike, styles.btnIcon)}>
-                    <svg 
-                    onClick={handleLikeTrack}
-                    className={classNames(styles.trackPlayDislikeSvg, isLiked ? styles.activeLike : null)}>
-                      <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
-                    </svg>
-                  </div> */}
                 </div>
               </div>
               </div>

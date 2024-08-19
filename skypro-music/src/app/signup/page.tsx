@@ -30,7 +30,7 @@ export default function SignupPage() {
     "Имя пользователя не может быть пустым"
   );
 
-  const blurHandler = (e: { target: { name: any } }) => {
+  const blurHandler = (e: { target: { name: string } }) => {
     switch (e.target.name) {
       case "email":
         setEmailDirty(true);

@@ -27,8 +27,3 @@ export default function Error({ error, reset }: ErrorType) {
     </div>
   );
 }
-// let something: unknown = "Привет"; 
-// // Перед использованием нужно проверить тип 
-// if (typeof something === "string") { 
-//   console.log(something.toUpperCase()); // Теперь это безопасно 
-// }

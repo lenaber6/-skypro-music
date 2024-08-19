@@ -13,7 +13,6 @@ export function useTrackLikes(trackData: trackType) {
   const tokens = useAppSelector((state) => state.user.tokens);
   const likedTracks = useAppSelector((state) => state.playlist.likedTracks);
   const trackId = trackData?.id;
-//   console.log(trackData);
 // if (trackId === undefined) {return};
 const isLiked = !!likedTracks.find((track) => track.id === trackId);
 
@@ -30,14 +29,11 @@ const isLiked = !!likedTracks.find((track) => track.id === trackId);
         access: tokens.access,
         refresh: tokens.refresh,
       });
-      console.log(trackId);
       if (isLiked) {
         dispatch(setDisLikedTracks(trackData));
-        // console.log(trackData);
       } else {
         dispatch(setLikedTracks(trackData));
       }
-      // console.log(trackData);
     } catch (error) {
       console.error(error);
     }

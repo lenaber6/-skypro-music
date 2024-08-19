@@ -16,7 +16,6 @@ export async function signupUser({
   password: string;
   username: string;
 }) {
-  console.log(email, password, username);
   const response = await fetch(signupUrl, {
     method: "POST",
     body: JSON.stringify({

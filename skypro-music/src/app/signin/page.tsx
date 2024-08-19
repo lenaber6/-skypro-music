@@ -5,8 +5,6 @@ import Link from "next/link";
 import styles from "./signin.module.css"
 import classNames from "classnames";
 import { ChangeEvent, SetStateAction, useState } from "react";
-// import { loginUser } from "@/api/users";
-// import { useUser } from "@/hooks/useUser";
 import { getTokens, getUser } from "@/store/features/userSlice";
 import { useAppDispatch } from "@/hooks";
 import { useRouter } from "next/navigation";
@@ -29,7 +27,7 @@ const [passwordDirty, setPasswordDirty] = useState(false);
 const [emailError, setEmailError] = useState("Email не может быть пустым");
 const [passwordError, setPasswordError] = useState("Пароль не может быть пустым");
 
-const blurHandler = (e: { target: { name: any; }; }) => {
+const blurHandler = (e: { target: { name: string; }; }) => {
   switch (e.target.name) {
     case 'email':
       setEmailDirty(true);
@@ -95,28 +93,10 @@ async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
     //убрать Link, навигация идет через встроенный хук useRouter(при импорте обязательно из next/navigate!!!!!)
     router.push("/");
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
-
-  // const [loginData, setLoginData] = useState({ email: "", password: "" });
-  // const { login } = useUser();
-
-  // const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target;
-  //   setLoginData({
-  //     ...loginData,
-  //     [name]: value,
-  //   });
-  // };
-
-  // const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-  //   loginUser(loginData).then((data) => {
-  //     login(data, loginData);
-  //   });
-  // };
     return(
   <div className={styles.wrapper}>
     <div className={styles.containerEnter}>

@@ -9,15 +9,12 @@ import { useEffect, useState } from "react";
 import { setInitialTracks } from "@/store/features/playlistSlice";
 
   export default function PlayList({ tracks, isFavourite }: { tracks: trackType[], isFavourite?: boolean }) {
-    console.log(tracks);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(true);
 
   const filteredTracks = useAppSelector(
     (state) => state.playlist.filteredTracks
   );
-console.log(filteredTracks);
-
 
   useEffect(() => {
     dispatch(setInitialTracks({ initialTracks: tracks }));

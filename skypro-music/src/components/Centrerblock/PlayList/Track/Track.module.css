@@ -59,9 +59,6 @@
     stroke: #4e4e4e;
   }
   
-  /* .trackTitleText {
-
-  } */
   .trackTitleLink {
     font-style: normal;
     font-weight: 400;
@@ -109,18 +106,14 @@
     color: #696969;
   }
   
-  /* .trackTime {
-
-  } */
   .trackTimeSvg {
     width: 34px;
     height: 15px;
-    /* margin-right: 17px; */
     fill: transparent;
     stroke: #696969;
   }
   .btnIcon:active svg {
-    height: 20px;
+    height: 15px;
     fill: transparent;
     stroke: #ffffff;
     cursor: pointer;
@@ -143,13 +136,6 @@
     display: block;
     animation: bubble_out 0.6s ease-in-out infinite both;
   }
-  /* .likeButton:hover {
-    fill: gray;
-  } */
-  /* .activeLike {
-    fill: #b672ff;
-  } */
-  
   @keyframes bubble_out {
     0%,
     to {
