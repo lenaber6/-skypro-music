@@ -68,7 +68,7 @@ export default function Track({ trackData, tracksData }: TrackType) {
         <div onClick={handleLike} >
           <svg className={styles.trackTimeSvg}>
             <use
-              xlinkHref="img/icon/sprite.svg#icon-like"
+              xlinkHref="/img/icon/sprite.svg#icon-like"
             />
           </svg>
         <span className={styles.trackTimeText}>{formatDuration(duration_in_seconds)}</span>
