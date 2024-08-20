@@ -235,7 +235,7 @@ useEffect(() => {
         <div onClick={handleLike}>
           <svg className={styles.trackTimeSvg}>
             <use
-              xlinkHref="img/icon/sprite.svg#icon-like"
+              xlinkHref="/img/icon/sprite.svg#icon-like"
             />
           </svg>
       </div>

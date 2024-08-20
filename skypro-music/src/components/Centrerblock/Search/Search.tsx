@@ -20,7 +20,7 @@ export default function Search() {
     <>
       <div className={classNames(styles.centerblockSearch, styles.search)}>
         <svg className={styles.searchSvg}>
-          <use xlinkHref="img/icon/sprite.svg#icon-search" />
+          <use xlinkHref="/img/icon/sprite.svg#icon-search" />
         </svg>
         <input
           className={styles.searchText}
