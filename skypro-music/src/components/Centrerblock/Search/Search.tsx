@@ -5,7 +5,6 @@ import styles from "./Search.module.css";
 import classNames from "classnames";
 import { useAppDispatch } from "@/hooks";
 import { setFilters } from "@/store/features/playlistSlice";
-import Filters from "@/components/Filters/Filters";
 
 export default function Search() {
   const [searchValue, setSearchValue] = useState("");

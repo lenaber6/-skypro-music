@@ -12,11 +12,6 @@ type ReduxProviderType = {
 }
 export default function ReduxProvider({children}: ReduxProviderType)
 
-// export default function ReduxProvider({
-//   children,
-// }: {
-//   children: React.ReactNode;
-// })
  {
   const storeRef = useRef<AppStore>(); // Мы используем хук useRef для создания ссылки на 
   if (!storeRef.current) {       // наше хранилище, чтобы избежать его повторной инициализации 

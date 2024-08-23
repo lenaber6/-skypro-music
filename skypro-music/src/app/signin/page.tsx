@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./signin.module.css"
 import classNames from "classnames";
-import { ChangeEvent, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { getTokens, getUser } from "@/store/features/userSlice";
 import { useAppDispatch } from "@/hooks";
 import { useRouter } from "next/navigation";
@@ -39,17 +39,10 @@ const blurHandler = (e: { target: { name: string; }; }) => {
 }
 // Функция изменения данных при введении неких данных в разные поля ввода инпутов
 function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-  // name - это атрибут полей инпутов: email или password, value - это то, что в этом поле хранилось.
-  // e- объект события, target- цель события
   const {name, value} = e.target;
-  // setFormData - функция для установки в состояние данных наших полей ввода
   setFormData((prevFormData) => {
     return {
-      // возвращаем новое состояние, которое будет установлено в formData
-      // старые поля не меняем, их сохраняем, 
       ...prevFormData,
-      // в [] - так как мы хотим указать свойство через переменную
-      // изменения данных того поля, где пользователь ввел свои данные
       [name]: value,
     };
   });
@@ -85,12 +78,9 @@ async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
   e.preventDefault();
   try {
     await Promise.all([
-      // мы вызываем здесь юзера и токены
-      // метод unwrap возвращает результат или выбрасывает ошибку
       dispatch(getTokens(formData)).unwrap(),
       dispatch(getUser(formData)).unwrap(),
     ]);
-    //убрать Link, навигация идет через встроенный хук useRouter(при импорте обязательно из next/navigate!!!!!)
     router.push("/");
   } catch (error) {
     console.error(error);

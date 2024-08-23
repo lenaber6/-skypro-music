@@ -116,14 +116,7 @@
   .playerBtnRepeatSvg {
     width: 20px;
     height: 18px;
-    /* fill: transparent;
-    stroke: #696969; */
   }
-  /* .btnIcon:hover svg {
-    fill: transparent;
-    stroke: #acacac;
-    cursor: pointer;
-  } */
   .btnIcon:active svg {
     height: 20px;
     fill: transparent;
@@ -148,7 +141,6 @@
   .trackTimeSvg {
     width: 34px;
     height: 15px;
-    /* margin-right: 17px; */
     fill: transparent;
     stroke: #696969;
   }
@@ -156,7 +148,6 @@
     width: 20px;
     height: 18px;
     fill: transparent;
-    /* stroke: #696969; */
   }
 
   .btn {
@@ -164,10 +155,6 @@
   }
 
   .trackTimeBlock {
-    /* width: Hug (81px)px; */
-    /* height: Hug (18px)px; */
-    /* top: 321px; */
-    /* left: 1895px; */
     color: #696969;
     gap: 5px;
     opacity: 0px;
@@ -175,7 +162,6 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    /* font-family: StratosSkyeng; */
     font-size: 14px;
     font-weight: 500;
     line-height: 24px;
@@ -193,9 +179,6 @@
     -ms-flex-direction: row;
     flex-direction: row;
   }
-  /* .trackPlay {
-
-  } */
   
   .trackPlayContain {
     width: auto;
@@ -296,32 +279,6 @@
     stroke: #696969;
   }
   
-  /* .trackPlayDislike {
-    margin-left: 28.5px;
-  }
-  
-  .trackPlayDislikeSvg {
-    width: 14.34px;
-    height: 13px;
-    /* fill: transparent; */
-    /* stroke: #696969; */
-   
-  /* .btnIcon:hover svg {
-    fill: transparent;
-    stroke: #acacac;
-    cursor: pointer;
-  }
-  .btnIcon:active svg {
-    fill: transparent;
-    stroke: #ffffff;
-    cursor: pointer;
-  }
-  
-  .btnIcon:active  {
-    fill: #696969;
-    stroke: #ffffff;
-    cursor: pointer;
-  } */
   .barVolumeBlock {
     width: auto;
     display: -webkit-box;
@@ -333,9 +290,6 @@
     align-items: center;
     padding: 0 92px 0 0;
   }
-  /* .volume {
-
-  } */
   .controls {
     display:none
   }

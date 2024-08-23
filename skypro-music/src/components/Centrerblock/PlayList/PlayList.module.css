@@ -20,9 +20,6 @@
     scrollbar-width: none;
   }
   
-  /* .playlist {
-
-  } */
   .contentTitle {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -39,9 +36,6 @@
     justify-content: space-between;
     margin-bottom: 24px;
   }
-  /* .playlistTitle {
-
-  } */
   .playlistTitleCol {
     font-style: normal;
     font-weight: 400;

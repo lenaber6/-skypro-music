@@ -32,10 +32,6 @@
   flex-grow: 3;
   padding: 20px 40px 20px 111px;
 }
-/* .centerblock {
-
-} */
-
 .description {
   display: inherit;
   justify-content: inherit;
@@ -149,9 +145,6 @@
   }
 }
 
-/* .footer {
-
-} */
 @media (prefers-reduced-motion) {
   .card:hover span {
     transform: none;

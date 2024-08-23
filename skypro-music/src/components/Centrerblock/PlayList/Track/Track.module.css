@@ -105,12 +105,17 @@
     line-height: 24px;
     color: #696969;
   }
-  
+  .trackLook {
+    position:relative;
+  }
   .trackTimeSvg {
     width: 34px;
     height: 15px;
     fill: transparent;
     stroke: #696969;
+    /* position: absolute;
+    right: 40px; */
+
   }
   .btnIcon:active svg {
     height: 15px;

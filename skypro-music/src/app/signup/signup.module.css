@@ -73,33 +73,6 @@
     margin-bottom: 30px;
   }
   
-  /* .modal__input::-webkit-input-placeholder {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 24px;
-    letter-spacing: -0.05px;
-    color: #D0CECE;
-  }
-  
-  .modal__input:-ms-input-placeholder {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 24px;
-    letter-spacing: -0.05px;
-    color: #D0CECE;
-  }
-  
-  .modal__input::-ms-input-placeholder {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 24px;
-    letter-spacing: -0.05px;
-    color: #D0CECE;
-  } */
-  
   .modalInput::placeholder {
     font-style: normal;
     font-weight: 400;

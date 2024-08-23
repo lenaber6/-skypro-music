@@ -11,7 +11,6 @@ type FilterItemType = {
   value: "author" | "genre" | "order";
   handleFilterClick: (newFilter: string) => void;
   isOpened: boolean;
-  // tracksData: trackType[];
   optionList: string[] | string;
 };
 
@@ -20,17 +19,10 @@ export default function FilterItem({
   title,
   value,
   isOpened,
-  // tracksData,
   optionList,
 }: FilterItemType) {
   const tracksData = useAppSelector((state) => state.playlist.initialTracks);
   const [filterNumber, setFilterNumber] = useState<number>(0);
-  // const authorsList = useAppSelector(
-  //   (state) => state.playlist.filterOptions.author
-  // );
-  // const genresList = useAppSelector(
-  //   (state) => state.playlist.filterOptions.genre
-  // );
 
   const dispatch = useAppDispatch();
 
@@ -52,12 +44,6 @@ export default function FilterItem({
         ? optionList.filter((el) => el !== item)
         : [...optionList, item],
 
-        // author: authorsList.includes(item)
-        //   ? authorsList.filter((el) => el !== item)
-        //   : [...authorsList, item],
-        // genre: genresList.includes(item)
-        //   ? genresList.filter((el) => el !== item)
-        //   : [...genresList, item],
       })
     );
     } else {
@@ -69,10 +55,6 @@ export default function FilterItem({
     if (value !== "order" && optionList)
   setFilterNumber(optionList.length);
   }, [optionList, value]);
-
-  // useEffect(() => {
-  //   setFilterNumber(authorsList.length);
-  // }, [authorsList.length]);
 
   getFilterList();
 
@@ -92,13 +74,11 @@ export default function FilterItem({
       )}
 
       {isOpened && (
-        // <div className={styles.activeFilterContainer}>
         <ul className={classNames(styles.activeFilter, styles.filterList)}>
           <div className={styles.filterListDiv}>
             {getFilterList().map((item) => (
               <li
                 onClick={() => toggleFilter(item)}
-                // className={classNames(styles.filterItem, styles.SelectedFilter)}
 
                       className={classNames({
                         [styles.SelectedFilter]:
@@ -114,7 +94,6 @@ export default function FilterItem({
             ))}
           </div>
         </ul>
-        // {/* </div> */}
       )}
     </div>
   );

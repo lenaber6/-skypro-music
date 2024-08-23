@@ -18,9 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <ReduxProvider>  {/* После создания компонента ReduxProvider , последний шаг — 
-      это обернуть ваше приложение в этот провайдер, чтобы состояние из Redux стало 
-      доступно во всех компонентах вашего приложения.*/}
+      <ReduxProvider>  
       <body className={montserrat.className}>
         <UserProvider>{children}</UserProvider>
         </body>

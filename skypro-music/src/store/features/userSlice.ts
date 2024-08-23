@@ -56,7 +56,6 @@ const userSlice = createSlice({
       // Обработка неудачного выполнения асинхронного экшена getUser
       .addCase(getUser.rejected, (state, action) => {
         console.error("Error:", action.error.message); // Выводим сообщение об ошибке в консоль
-        alert("Заполните поля: логин и пароль");
       })
       .addCase(
         getTokens.fulfilled,
@@ -74,7 +73,6 @@ const userSlice = createSlice({
       // Обработка неудачного выполнения асинхронного экшена getTokens
       .addCase(getTokens.rejected, (state, action) => {
         console.error("Error:", action.error.message); // Выводим сообщение об ошибке в консоль
-        alert("Заполните поля: логин и пароль");
       });
   },
 });

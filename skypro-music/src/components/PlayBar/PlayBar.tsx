@@ -6,14 +6,9 @@ import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import ProgressBar from "./ProgressBar/ProgressBar";
 import { formatCurrentTimeDuration, formatDuration } from "@/utils";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { setInitialTracks, setIsPlaying, setIsShuffle, setNextTrack, setPrevTrack } from "@/store/features/playlistSlice";
-import { useUser } from "@/hooks/useUser";
-import { deleteFavouriteTracks, getTracks, postFavouriteTracks } from "@/api/tracks";
-import { updateToken } from "@/api/users";
+import { setIsPlaying, setIsShuffle, setNextTrack, setPrevTrack } from "@/store/features/playlistSlice";
 import { useTrackLikes } from "@/hooks/likes";
 import { trackType } from "@/types";
-import { useInitializeLikedTracks } from "@/hooks/initilize";
-import { current } from "@reduxjs/toolkit";
 
 type PlayBarType = {
   trackData: trackType;
@@ -40,7 +35,6 @@ export default function PlayBar({trackData}: PlayBarType) {
 
   const handleNextTrackClick = () => {
     dispatch(setNextTrack());
-    // dispatch(setIsPlaying(true));
   };
   const handlePrevTrackClick = () => {
     dispatch(setPrevTrack());

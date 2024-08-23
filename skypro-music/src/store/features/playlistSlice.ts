@@ -1,7 +1,4 @@
 // Здесь храниться логика и данные для управления аутентификацией пользователя в нашем приложении.
-// В этом файле мы будем использовать функционал, предоставляемый Redux Toolkit, чтобы создать срез состояния.
-// CreatSlice - встроенная функция, которая помогает создать слайс.
-// PayloadAction - некий встроенный тип, который обозначает action
 import { fetchFavouriteTracks } from "@/api/user";
 import { trackType } from "@/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -95,8 +92,6 @@ const playlistSlice = createSlice({ // С помощью функции createSl
     setIsShuffle: (state, action: PayloadAction<boolean>) => {
       state.isShuffle = action.payload;
     }, 
-    // setNextTrack: changeTrack(1),
-    // setPrevTrack: changeTrack(-1),
     setFilters: (state, action:PayloadAction<{
       author?: string[];
       genre?: string[];
@@ -159,22 +154,5 @@ if (state.filterOptions.order === "Сначала новые") {
     })
   }
 });
-// Вариант на будущее))
-// function changeTrack(direction: number) {
-//   return (state: PlaylistStateType) => {
-//     const currentTracks = state.isShuffle
-//       ? state.shuffledPlaylist
-//       : state.playlist;
-//     let newIndex =
-//       currentTracks.findIndex((item) => item.id === state.currentTrack?.id) +
-//       direction;
-
-//     // Циклическое переключение
-//     newIndex = (newIndex + currentTracks.length) % currentTracks.length;
-
-//     state.currentTrack = currentTracks[newIndex];
-//     state.isPlaying = true;
-//   };
-// }
 export const { setInitialTracks, setCurrentTrack, setIsPlaying, setNextTrack, setPrevTrack, setIsShuffle, setFilters, setLikedTracks, setDisLikedTracks } = playlistSlice.actions;
 export const playlistReducer = playlistSlice.reducer;

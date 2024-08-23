@@ -5,13 +5,11 @@ import styles from "./Navigation.module.css";
 import classNames from "classnames";
 import Link from "next/link";
 import { useState } from "react";
-import { useUser } from "@/hooks/useUser";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { getUser, logout } from "@/store/features/userSlice";
+import { logout } from "@/store/features/userSlice";
 
 export default function Navigation() {
   const [isOpened, setIsOpened] = useState<boolean>(false);
-  // const {user} = useUser();
   const user = useAppSelector((state) => state.user.user);
   
   const dispatch = useAppDispatch();
