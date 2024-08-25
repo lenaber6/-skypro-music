@@ -8,6 +8,7 @@ import { useState } from "react";
 import { getTokens, getUser } from "@/store/features/userSlice";
 import { useAppDispatch } from "@/hooks";
 import { useRouter } from "next/navigation";
+import { fetchUser } from "@/api/user";
 
 type SigninPageType = {
   params: {
@@ -49,7 +50,8 @@ function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
   setEmail(e.target.value);
   const re = /^((([0-9A-Za-z]{1}[-0-9A-z\.]{0,30}[0-9A-Za-z]?)|([0-9А-Яа-я]{1}[-0-9А-я\.]{0,30}[0-9А-Яа-я]?))@([-A-Za-z]{1,}\.){1,}[-A-Za-z]{2,})$/
   if (!re.test(String(e.target.value).toLowerCase())) {
-    setEmailError('Некорректный email')
+    setEmailError('Некорректный email');
+  
   } else {
     setEmailError("");
   }
@@ -83,7 +85,8 @@ async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
     ]);
     router.push("/");
   } catch (error) {
-    console.error(error);
+    setEmailError("Пользователь с таким email или паролем не найден");
+    setPasswordError("Не найдено активной учетной записи с указанными данными")
   }
 };
 
@@ -129,4 +132,3 @@ async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
   </div>
     );
 }
-

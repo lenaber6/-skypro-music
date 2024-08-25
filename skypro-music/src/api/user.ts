@@ -17,6 +17,8 @@ export const fetchUser = async ({ email, password }: SigninFormType) => {
   });
   if (response.status === 400) {
     throw new Error("Неверный логин или пароль");
+  // } else  if (response.status === 401) {
+  //   alert("Пользователь с таким email или паролем не найден");
   } else if (!response.ok) {
     throw new Error("Заполните поля: логин и пароль");
   }
@@ -37,6 +39,8 @@ export async function fetchTokens({ email, password }: SigninFormType) {
   });
   if (response.status === 400) {
     throw new Error("Неверный логин или пароль");
+  // } else  if (response.status === 401) {
+  //   alert("Не найдено активной учетной записи с указанными данными");
   } else if (!response.ok) {
     throw new Error("Заполните поля: логин и пароль");
   }

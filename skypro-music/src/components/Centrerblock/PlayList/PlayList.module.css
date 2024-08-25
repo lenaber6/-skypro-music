@@ -7,6 +7,8 @@
     -ms-flex-direction: column;
     flex-direction: column;
     height: 500px;
+    margin-top: 80px;
+
   }
   .contentPlaylist {
     display: -webkit-box;
